@@ -1,4 +1,4 @@
-package net.innovexit.rentageapp;
+package com.example.rentage;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("net.innovexit.rentageapp", appContext.getPackageName());
+        assertEquals("com.example.rentage", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package net.innovexit.rentageapp;
+package com.example.rentage;
 
 import org.junit.Test;
 

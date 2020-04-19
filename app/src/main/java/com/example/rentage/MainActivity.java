@@ -1,8 +1,9 @@
-package net.innovexit.rentageapp;
+package com.example.rentage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
