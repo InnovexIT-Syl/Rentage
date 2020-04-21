@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Rentage</string>
+    <string name="motor_text">Book a car which will be delivered to wherever you are and start driving within less than an hour. Luxury cars, sport cars and exotic cars. Cars with private chauffeurs are also available.</string>
+    <string name="yachits_text">Whether for fishing, cruising, or diving, yacht rental in Dubai has never been this easy. Book a yacht and have it prepared for you perfectly and in time. Rentage will ensure a smooth and swift booking.</string>
+    <string name="helicopter_text">Experience Dubai\'s extraordinary helicopter tours. Unforgettable trips that will take you on tours over Dubai\'s famous landmarks. Tours can be booked privately and on a sharing basis of up to 5 people. </string>
+    <string name="todo">TODO</string>
+    <string-array name="query_suggestions">
+        <item>Furniture</item>
+        <item>Funny</item>
+        <item>Women Fashion</item>
+        <item>Hotels</item>
+        <item>Man Fashion</item>
+        <item>Electronics Appliances</item>
+    </string-array>
 </resources>

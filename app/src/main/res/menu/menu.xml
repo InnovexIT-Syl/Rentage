@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_action_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/shopping"
+        android:icon="@drawable/ic_shopping_basket_black_24dp"
+        android:title="Search In"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+</menu>

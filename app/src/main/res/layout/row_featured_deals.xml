@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="#fff"
+    app:cardCornerRadius="3dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/rent_car_image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY"
+            android:src="@drawable/yachts"
+            android:textColor="#181819" />
+
+        <TextView
+            android:id="@+id/rent_car_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mercedes G Class"
+            android:textColor="#181819"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/rent_car_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AED 3150.00"
+            android:textColor="#181819"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
