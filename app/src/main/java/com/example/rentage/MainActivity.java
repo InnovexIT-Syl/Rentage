@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.andremion.floatingnavigationview.FloatingNavigationView;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.example.rentage.model.FeaturedDealsModel;
@@ -21,6 +23,7 @@ import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
+import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     private Toolbar toolbarHome;
     private RecyclerView featuredDealsRecyclerview;
     private SliderLayout slider;
+    private FloatingNavigationView floatingNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         toolbarHome = findViewById(R.id.toolbar_home);
         featuredDealsRecyclerview = findViewById(R.id.featured_deals_recyclerview);
-        frameLayout = findViewById(R.id.frame_layout);
-        searchView = findViewById(R.id.search_view);
 
+        searchView = findViewById(R.id.search_view);
+        floatingNavigationView = findViewById(R.id.floating_navigation_view);
 
 //
 //        View view = getLayoutInflater().inflate(R.layout.activity_main,null,false);
@@ -68,12 +72,32 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         setSupportActionBar(toolbarHome);
 //        toolbarHome.setTitle("Home");
-        toolbarHome.setTitleTextColor(Color.BLACK);
-        toolbarHome.setTitle("Home");
+//        toolbarHome.setTitleTextColor(Color.BLACK);
+//        toolbarHome.setTitle("Home");
+        getSupportActionBar().setTitle("");
         slider = findViewById(R.id.slider);
         featuredDeals();
         slider();
         searchViewCode();
+        openNavigation();
+    }
+
+    private void openNavigation() {
+
+        floatingNavigationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingNavigationView.open();
+            }
+        });
+        floatingNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                Toast.makeText(MainActivity.this, ""+item.getTitle(), Toast.LENGTH_SHORT).show();
+                floatingNavigationView.close();
+                return true;
+            }
+        });
     }
 
     @SuppressLint("CheckResult")
@@ -83,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         ArrayList<String> listName = new ArrayList<>();
 
         listImage.add(R.drawable.rent_motor);
-        listName.add("Mercedes G Class");
+        listName.add("Mercedes G Class Mercedes G ClassMercedes G ClassMercedes G ClassMercedes G Class");
         listImage.add(R.drawable.helicopter);
         listName.add("Mercedes G Class");
         listImage.add(R.drawable.motor);
@@ -181,6 +205,11 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         } else {
             super.onBackPressed();
         }
+        if (floatingNavigationView.isOpened()) {
+            floatingNavigationView.close();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void featuredDeals() {
@@ -213,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
                 "Class", 3150.00));
 
-        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getApplicationContext(),
+        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(this,
                 featuredDealsModelList);
         featuredDealsRecyclerview.setAdapter(adapter);
     }
