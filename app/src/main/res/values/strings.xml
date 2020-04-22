@@ -4,12 +4,13 @@
     <string name="yachits_text">Whether for fishing, cruising, or diving, yacht rental in Dubai has never been this easy. Book a yacht and have it prepared for you perfectly and in time. Rentage will ensure a smooth and swift booking.</string>
     <string name="helicopter_text">Experience Dubai\'s extraordinary helicopter tours. Unforgettable trips that will take you on tours over Dubai\'s famous landmarks. Tours can be booked privately and on a sharing basis of up to 5 people. </string>
     <string name="todo">TODO</string>
-    <string-array name="query_suggestions">
-        <item>Furniture</item>
-        <item>Funny</item>
-        <item>Women Fashion</item>
-        <item>Hotels</item>
-        <item>Man Fashion</item>
-        <item>Electronics Appliances</item>
-    </string-array>
+    <string name="developer">André Mion</string>
+    <string name="website">https://github.com/andremion</string>
+    <string name="menu_item_home">HOME</string>
+    <string name="menu_item_car">CARS</string>
+    <string name="menu_item_yachits">YACHITS</string>
+    <string name="menu_item_helicopter">HELICOPTER TOURS</string>
+    <string name="menu_group_communicate">Communicate</string>
+    <string name="menu_item_about">About</string>
+
 </resources>

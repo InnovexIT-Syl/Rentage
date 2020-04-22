@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
+import com.andremion.floatingnavigationview.FloatingNavigationView;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.glide.slider.library.SliderLayout;
@@ -24,6 +25,8 @@ import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     String[] searchList = new String[]{"Motor", "Helicopter", "Car", "sheep", "Motorcycle"};
     List<Integer> slideImageList = new ArrayList<>();
     List<String> slideNameList = new ArrayList<>();
+
+    private FloatingNavigationView floatingNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +78,32 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         setSupportActionBar(toolbarHome);
 //        toolbarHome.setTitle("Home");
-        toolbarHome.setTitleTextColor(Color.BLACK);
-        getSupportActionBar().setTitle("Home");
+       // toolbarHome.setTitleTextColor(Color.BLACK);
+        getSupportActionBar().setTitle("");
         slider = findViewById(R.id.slider);
+        floatingNavigationView = findViewById(R.id.floating_navigation_view);
+
+        openNavigation();
         featuredDeals();
         slider();
         searchViewCode();
+    }
+
+    private void openNavigation() {
+        floatingNavigationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                floatingNavigationView.open();
+            }
+        });
+        floatingNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                Toast.makeText(MainActivity.this, item.getTitle() + " Selected!", Toast.LENGTH_SHORT).show();
+                floatingNavigationView.close();
+                return true;
+            }
+        });
     }
 
     private void slider() {
@@ -182,6 +207,11 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+        if (floatingNavigationView.isOpened()) {
+            floatingNavigationView.close();
         } else {
             super.onBackPressed();
         }
