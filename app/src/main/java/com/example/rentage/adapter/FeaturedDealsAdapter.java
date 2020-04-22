@@ -61,11 +61,11 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
         return featuredDealsList.size();
     }
 
-    public static class FeaturedDealsHolder extends RecyclerView.ViewHolder {
+    static class FeaturedDealsHolder extends RecyclerView.ViewHolder {
         private ImageView featuredImage;
         private TextView featuredName;
         private TextView featuredCost;
-        public FeaturedDealsHolder(@NonNull View itemView) {
+        FeaturedDealsHolder(@NonNull View itemView) {
             super(itemView);
 
             featuredImage = itemView.findViewById(R.id.rent_car_image);

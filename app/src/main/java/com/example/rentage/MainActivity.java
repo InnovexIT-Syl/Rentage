@@ -11,10 +11,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.example.rentage.adapter.BookingModelAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.model.BookingModel;
 import com.example.rentage.model.FeaturedDealsModel;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
@@ -24,6 +27,7 @@ import com.glide.slider.library.tricks.ViewPagerEx;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 //    List<String> featuredNameList = new ArrayList<>();
 //    List<String> featuredPriceList = new ArrayList<>();
     List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
+    List<BookingModel> bookingModelList = new ArrayList<>();
 
     MaterialSearchView searchView;
     FrameLayout frameLayout;
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     List<Integer> slideImageList = new ArrayList<>();
     List<String> slideNameList = new ArrayList<>();
     private Toolbar toolbarHome;
-    private RecyclerView featuredDealsRecyclerview;
+    private RecyclerView featuredDealsRecyclerview, bookingRecyclerView;
     private SliderLayout slider;
 
     @Override
@@ -57,8 +62,9 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         featuredDealsRecyclerview = findViewById(R.id.featured_deals_recyclerview);
         frameLayout = findViewById(R.id.frame_layout);
         searchView = findViewById(R.id.search_view);
+        bookingRecyclerView = findViewById(R.id.booking_recycleview);
 
-
+        searchView.closeSearch();
 //
 //        View view = getLayoutInflater().inflate(R.layout.activity_main,null,false);
 //        frameLayout.addView(view);
@@ -72,8 +78,24 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         toolbarHome.setTitle("Home");
         slider = findViewById(R.id.slider);
         featuredDeals();
+        bookingDeals();
         slider();
         searchViewCode();
+    }
+
+    private void bookingDeals() {
+        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.motor,
+                R.string.motors, R.string.motor_text));
+        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.yachts,
+                R.string.yachts, R.string.yachits_text));
+        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.helicopter,
+                R.string.helicopter_rides, R.string.helicopter_text));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        bookingRecyclerView.setLayoutManager(layoutManager);
+        BookingModelAdapter adapter = new BookingModelAdapter(getApplicationContext(), bookingModelList);
+        bookingRecyclerView.setAdapter(adapter);
+
     }
 
     @SuppressLint("CheckResult")
