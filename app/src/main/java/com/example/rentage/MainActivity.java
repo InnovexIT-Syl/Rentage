@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     MaterialSearchView searchView;
     FrameLayout frameLayout;
 
-    String[] searchList = new String[]{"Motor", "Helicopter", "Car", "sheep", "Motorcycle"};
+    String[] searchList = new String[]{"Motor", "Helicopter", "Car", "Ship", "Motorcycle"};
     List<Integer> slideImageList = new ArrayList<>();
     List<String> slideNameList = new ArrayList<>();
 
