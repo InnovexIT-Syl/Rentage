@@ -1,24 +1,21 @@
 package com.example.rentage;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.model.FeaturedDealsModel;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
@@ -32,21 +29,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
 
-    private Toolbar toolbarHome;
-    private RecyclerView featuredDealsRecyclerview;
-
-    List<Integer> featuredImageList = new ArrayList<>();
-    List<String> featuredNameList = new ArrayList<>();
-    List<String> featuredPriceList = new ArrayList<>();
-
-    private SliderLayout slider;
+//    List<Integer> featuredImageList = new ArrayList<>();
+//    List<String> featuredNameList = new ArrayList<>();
+//    List<String> featuredPriceList = new ArrayList<>();
+    List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
 
     MaterialSearchView searchView;
     FrameLayout frameLayout;
-
     String[] searchList = new String[]{"Motor", "Helicopter", "Car", "Ship", "Motorcycle"};
     List<Integer> slideImageList = new ArrayList<>();
     List<String> slideNameList = new ArrayList<>();
+    private Toolbar toolbarHome;
+    private RecyclerView featuredDealsRecyclerview;
+    private SliderLayout slider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +69,14 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         setSupportActionBar(toolbarHome);
 //        toolbarHome.setTitle("Home");
         toolbarHome.setTitleTextColor(Color.BLACK);
-        getSupportActionBar().setTitle("Home");
+        toolbarHome.setTitle("Home");
         slider = findViewById(R.id.slider);
         featuredDeals();
         slider();
         searchViewCode();
     }
 
+    @SuppressLint("CheckResult")
     private void slider() {
 
         ArrayList<Integer> listImage = new ArrayList<>();
@@ -191,23 +187,35 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
 
-        featuredImageList.add(R.drawable.helicopter);
-        featuredImageList.add(R.drawable.motor);
-        featuredImageList.add(R.drawable.yachts);
-        featuredImageList.add(R.drawable.helicopter);
+//        featuredImageList.add(R.drawable.helicopter);
+//        featuredImageList.add(R.drawable.motor);
+//        featuredImageList.add(R.drawable.yachts);
+//        featuredImageList.add(R.drawable.helicopter);
+//
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
 
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
+//        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
 
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
 
-        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
-
+        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getApplicationContext(),
+                featuredDealsModelList);
+        featuredDealsRecyclerview.setAdapter(adapter);
     }
 
 
