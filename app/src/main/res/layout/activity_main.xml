@@ -31,7 +31,7 @@
                     android:id="@+id/floating_navigation_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:backgroundTint="#2E7085"
+                    app:backgroundTint="#2A6477"
                     app:drawMenuBelowFab="true"
                     app:fabSize="mini"
                     app:headerLayout="@layout/navigation_view_header"
@@ -269,7 +269,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Newsletter"
-                        android:textColor="#575454"
+                        android:textColor="#181819"
                         android:textSize="20dp" />
 
                     <EditText
@@ -282,6 +282,7 @@
                         android:inputType="textEmailAddress"
                         android:padding="5dp" />
 
+
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -292,6 +293,14 @@
                         android:text="SUBSCRIBE"
                         android:textColor="#fff"
                         android:textSize="20dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="© 2020, rentage"
+                        android:textColor="#181819"
+                        android:textSize="15dp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
