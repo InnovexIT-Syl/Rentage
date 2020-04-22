@@ -1,21 +1,21 @@
 package com.example.rentage.model;
 
 public class FeaturedDealsModel {
-    private String featuredImage;
+    private int featuredImage;
     private String featuredName;
-    private String featuredPrice;
+    private double featuredPrice;
 
-    public FeaturedDealsModel(String featuredImage, String featuredName, String featuredPrice) {
+    public FeaturedDealsModel(int featuredImage, String featuredName, double featuredPrice) {
         this.featuredImage = featuredImage;
         this.featuredName = featuredName;
         this.featuredPrice = featuredPrice;
     }
 
-    public String getFeaturedImage() {
+    public int getFeaturedImage() {
         return featuredImage;
     }
 
-    public void setFeaturedImage(String featuredImage) {
+    public void setFeaturedImage(int featuredImage) {
         this.featuredImage = featuredImage;
     }
 
@@ -27,11 +27,11 @@ public class FeaturedDealsModel {
         this.featuredName = featuredName;
     }
 
-    public String getFeaturedPrice() {
+    public double getFeaturedPrice() {
         return featuredPrice;
     }
 
-    public void setFeaturedPrice(String featuredPrice) {
+    public void setFeaturedPrice(double featuredPrice) {
         this.featuredPrice = featuredPrice;
     }
 }

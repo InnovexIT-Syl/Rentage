@@ -1,32 +1,26 @@
 package com.example.rentage;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.andremion.floatingnavigationview.FloatingNavigationView;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.model.FeaturedDealsModel;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -35,23 +29,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
 
-    private Toolbar toolbarHome;
-    private RecyclerView featuredDealsRecyclerview;
-
-    List<Integer> featuredImageList = new ArrayList<>();
-    List<String> featuredNameList = new ArrayList<>();
-    List<String> featuredPriceList = new ArrayList<>();
-
-    private SliderLayout slider;
+//    List<Integer> featuredImageList = new ArrayList<>();
+//    List<String> featuredNameList = new ArrayList<>();
+//    List<String> featuredPriceList = new ArrayList<>();
+    List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
 
     MaterialSearchView searchView;
     FrameLayout frameLayout;
-
-    String[] searchList = new String[]{"Motor", "Helicopter", "Car", "sheep", "Motorcycle"};
+    String[] searchList = new String[]{"Motor", "Helicopter", "Car", "Ship", "Motorcycle"};
     List<Integer> slideImageList = new ArrayList<>();
     List<String> slideNameList = new ArrayList<>();
-
-    private FloatingNavigationView floatingNavigationView;
+    private Toolbar toolbarHome;
+    private RecyclerView featuredDealsRecyclerview;
+    private SliderLayout slider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +68,15 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         setSupportActionBar(toolbarHome);
 //        toolbarHome.setTitle("Home");
-       // toolbarHome.setTitleTextColor(Color.BLACK);
-        getSupportActionBar().setTitle("");
+        toolbarHome.setTitleTextColor(Color.BLACK);
+        toolbarHome.setTitle("Home");
         slider = findViewById(R.id.slider);
-        floatingNavigationView = findViewById(R.id.floating_navigation_view);
-
-        openNavigation();
         featuredDeals();
         slider();
         searchViewCode();
     }
 
-    private void openNavigation() {
-        floatingNavigationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                floatingNavigationView.open();
-            }
-        });
-        floatingNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Toast.makeText(MainActivity.this, item.getTitle() + " Selected!", Toast.LENGTH_SHORT).show();
-                floatingNavigationView.close();
-                return true;
-            }
-        });
-    }
-
+    @SuppressLint("CheckResult")
     private void slider() {
 
         ArrayList<Integer> listImage = new ArrayList<>();
@@ -210,34 +181,41 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         } else {
             super.onBackPressed();
         }
-        if (floatingNavigationView.isOpened()) {
-            floatingNavigationView.close();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     private void featuredDeals() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
 
-        featuredImageList.add(R.drawable.helicopter);
-        featuredImageList.add(R.drawable.motor);
-        featuredImageList.add(R.drawable.yachts);
-        featuredImageList.add(R.drawable.helicopter);
+//        featuredImageList.add(R.drawable.helicopter);
+//        featuredImageList.add(R.drawable.motor);
+//        featuredImageList.add(R.drawable.yachts);
+//        featuredImageList.add(R.drawable.helicopter);
+//
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
 
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
-        featuredNameList.add("Mercedes G Class");
+//        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
 
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
-        featuredPriceList.add("AED 3150.00");
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
 
-        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
-
+        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getApplicationContext(),
+                featuredDealsModelList);
+        featuredDealsRecyclerview.setAdapter(adapter);
     }
 
 
