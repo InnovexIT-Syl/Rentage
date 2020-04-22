@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/icons_home"
+            android:title="@string/menu_item_home"/>
+        <item
+            android:id="@+id/nav_car"
+            android:icon="@drawable/icons_car"
+            android:title="@string/menu_item_car"/>
+        <item
+            android:id="@+id/nav_yachits"
+            android:icon="@drawable/icons_yachits"
+            android:title="@string/menu_item_yachits"/>
+        <item
+            android:id="@+id/nav_helicopter"
+            android:icon="@drawable/icons_helicopter"
+            android:title="@string/menu_item_helicopter"/>
+
+    </group>
+
+    <item android:title="@string/menu_group_communicate">
+        <menu>
+            <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/icons_about"
+            android:title="@string/menu_item_about"/>
+        </menu>
+    </item>
+
+</menu>

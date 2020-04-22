@@ -37,7 +37,6 @@ public class BookingModelAdapter extends RecyclerView.Adapter<BookingModelAdapte
         holder.bookingImage.setImageResource(bookingModelList.get(position).getBookingImage());
         holder.bookingTitle.setText(bookingModelList.get(position).getBookingTitle());
         holder.bookingDesc.setText(bookingModelList.get(position).getBookingDeails());
-
     }
 
     @Override

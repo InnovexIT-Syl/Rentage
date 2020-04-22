@@ -13,10 +13,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rentage.adapter.BookingModelAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.adapter.ViewPagerAdapter;
+import com.example.rentage.fragments.FeaturedFragment;
+import com.example.rentage.fragments.HomeFragment;
 import com.example.rentage.model.BookingModel;
 import com.example.rentage.model.FeaturedDealsModel;
 import com.glide.slider.library.SliderLayout;
@@ -24,6 +28,7 @@ import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
+import com.google.android.material.tabs.TabLayout;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -33,19 +38,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
 
-//    List<Integer> featuredImageList = new ArrayList<>();
-//    List<String> featuredNameList = new ArrayList<>();
-//    List<String> featuredPriceList = new ArrayList<>();
-    List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
-    List<BookingModel> bookingModelList = new ArrayList<>();
-
-    MaterialSearchView searchView;
-    FrameLayout frameLayout;
-    String[] searchList = new String[]{"Motor", "Helicopter", "Car", "Ship", "Motorcycle"};
-    List<Integer> slideImageList = new ArrayList<>();
-    List<String> slideNameList = new ArrayList<>();
+    ViewPager viewPager;
     private Toolbar toolbarHome;
-    private RecyclerView featuredDealsRecyclerview, bookingRecyclerView;
     private SliderLayout slider;
 
     @Override
@@ -59,44 +53,57 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     private void initialize() {
 
         toolbarHome = findViewById(R.id.toolbar_home);
-        featuredDealsRecyclerview = findViewById(R.id.featured_deals_recyclerview);
-        frameLayout = findViewById(R.id.frame_layout);
-        searchView = findViewById(R.id.search_view);
-        bookingRecyclerView = findViewById(R.id.booking_recycleview);
-
-        searchView.closeSearch();
-//
-//        View view = getLayoutInflater().inflate(R.layout.activity_main,null,false);
-//        frameLayout.addView(view);
-        //  LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        frameLayout.setLayoutParams(layoutParams);
+        viewPager = findViewById(R.id.tab_viewpager);
 
 
         setSupportActionBar(toolbarHome);
-//        toolbarHome.setTitle("Home");
-        toolbarHome.setTitleTextColor(Color.BLACK);
+        toolbarHome.setTitleTextColor(Color.WHITE);
         toolbarHome.setTitle("Home");
         slider = findViewById(R.id.slider);
-        featuredDeals();
-        bookingDeals();
+
+        if (viewPager != null) {
+            setupViewPager(viewPager);
+        }
+
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabActions(tabLayout, viewPager);
         slider();
-        searchViewCode();
     }
 
-    private void bookingDeals() {
-        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.motor,
-                R.string.motors, R.string.motor_text));
-        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.yachts,
-                R.string.yachts, R.string.yachits_text));
-        bookingModelList.add(new BookingModel(new Date().toString(), R.drawable.helicopter,
-                R.string.helicopter_rides, R.string.helicopter_text));
+    static void tabActions(TabLayout tabLayout, final ViewPager viewPager) {
+        tabLayout.setupWithViewPager(viewPager);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        bookingRecyclerView.setLayoutManager(layoutManager);
-        BookingModelAdapter adapter = new BookingModelAdapter(getApplicationContext(), bookingModelList);
-        bookingRecyclerView.setAdapter(adapter);
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                viewPager.getVerticalScrollbarPosition();
+            }
+
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
+
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new HomeFragment(), "Services");
+        adapter.addFrag(new FeaturedFragment(), "Featured");
+        viewPager.setAdapter(adapter);
+    }
+
+
 
     @SuppressLint("CheckResult")
     private void slider() {
@@ -143,102 +150,18 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         slider.setCustomAnimation(new DescriptionAnimation());
-        slider.setDuration(4000);
+        slider.setDuration(3000);
         slider.addOnPageChangeListener(this);
         slider.stopCyclingWhenTouch(false);
     }
 
-    private void searchViewCode() {
-
-        searchView.setCursorDrawable(R.drawable.custom_cursor);
-        // searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        searchView.setSuggestions(searchList);
-        searchView.setEllipsize(true);
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                setSupportActionBar(toolbarHome);
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.search);
-        searchView.setMenuItem(item);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     public void onBackPressed() {
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
-    private void featuredDeals() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
 
-//        featuredImageList.add(R.drawable.helicopter);
-//        featuredImageList.add(R.drawable.motor);
-//        featuredImageList.add(R.drawable.yachts);
-//        featuredImageList.add(R.drawable.helicopter);
-//
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-
-//        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
-
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-
-        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getApplicationContext(),
-                featuredDealsModelList);
-        featuredDealsRecyclerview.setAdapter(adapter);
-    }
 
 
     @Override

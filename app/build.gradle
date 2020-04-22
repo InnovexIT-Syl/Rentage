@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.rentage"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,4 +43,7 @@ dependencies {
 
     // material search view library
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    // floating navigation libraray
+    implementation 'com.github.andremion:floatingnavigationview:1.2.0'
 }

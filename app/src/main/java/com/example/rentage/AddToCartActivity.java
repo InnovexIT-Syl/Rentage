@@ -1,0 +1,84 @@
+package com.example.rentage;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.model.FeaturedDealsModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddToCartActivity extends AppCompatActivity {
+
+    private Toolbar toolbarCart;
+    List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
+    private RecyclerView featuredDealsRecyclerview;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_to_cart);
+
+        initialize();
+    }
+
+    private void initialize() {
+
+        toolbarCart = findViewById(R.id.toolbar_home);
+        setSupportActionBar(toolbarCart);
+        toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getSupportActionBar().setTitle("Back To Home");
+        featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
+        featuredDeals();
+    }
+
+    private void featuredDeals() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
+
+//        featuredImageList.add(R.drawable.helicopter);
+//        featuredImageList.add(R.drawable.motor);
+//        featuredImageList.add(R.drawable.yachts);
+//        featuredImageList.add(R.drawable.helicopter);
+//
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//        featuredNameList.add("Mercedes G Class");
+//
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+//        featuredPriceList.add("AED 3150.00");
+
+//        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
+
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+                "Class", 3150.00));
+        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+                "Class", 3150.00));
+
+        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(this,
+                featuredDealsModelList);
+        featuredDealsRecyclerview.setAdapter(adapter);
+    }
+}
