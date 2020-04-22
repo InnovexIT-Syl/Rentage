@@ -33,7 +33,7 @@ public class AddToCartActivity extends AppCompatActivity {
 
         toolbarCart = findViewById(R.id.toolbar_home);
         setSupportActionBar(toolbarCart);
-        toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,29 +44,12 @@ public class AddToCartActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Back To Home");
         featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
-        featuredDeals();
+        mayAlsoLike();
     }
 
-    private void featuredDeals() {
+    private void mayAlsoLike() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
-
-//        featuredImageList.add(R.drawable.helicopter);
-//        featuredImageList.add(R.drawable.motor);
-//        featuredImageList.add(R.drawable.yachts);
-//        featuredImageList.add(R.drawable.helicopter);
-//
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//        featuredNameList.add("Mercedes G Class");
-//
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-//        featuredPriceList.add("AED 3150.00");
-
-//        featuredDealsRecyclerview.setAdapter(new FeaturedDealsAdapter(getApplicationContext(), featuredNameList, featuredPriceList, featuredImageList));
 
         featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
                 "Class", 3150.00));

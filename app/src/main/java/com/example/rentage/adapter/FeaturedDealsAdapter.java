@@ -2,6 +2,7 @@ package com.example.rentage.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentage.AddToCartActivity;
 import com.example.rentage.R;
 import com.example.rentage.model.FeaturedDealsModel;
 
@@ -54,6 +56,15 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
        holder.featuredImage.setImageResource(featuredDealsList.get(position).getFeaturedImage());
        holder.featuredName.setText(featuredDealsList.get(position).getFeaturedName());
        holder.featuredCost.setText("AED "+ featuredDealsList.get(position).getFeaturedPrice());
+
+       holder.itemView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(context, AddToCartActivity.class);
+               intent.putExtra("ID","");
+               context.startActivity(intent);
+           }
+       });
     }
 
     @Override
