@@ -1,9 +1,11 @@
 package com.example.rentage.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentage.R;
+import com.example.rentage.RentSpecificActivity;
 import com.example.rentage.model.BookingModel;
 
 import java.util.List;
@@ -36,7 +39,16 @@ public class BookingModelAdapter extends RecyclerView.Adapter<BookingModelAdapte
     public void onBindViewHolder(@NonNull BookingModelHolder holder, int position) {
         holder.bookingImage.setImageResource(bookingModelList.get(position).getBookingImage());
         holder.bookingTitle.setText(bookingModelList.get(position).getBookingTitle());
-        holder.bookingDesc.setText(bookingModelList.get(position).getBookingDeails());
+        holder.bookingDescription.setText(bookingModelList.get(position).getBookingDeails());
+
+        holder.bookingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, RentSpecificActivity.class);
+                intent.putExtra("ID","");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -47,12 +59,14 @@ public class BookingModelAdapter extends RecyclerView.Adapter<BookingModelAdapte
     static class BookingModelHolder extends RecyclerView.ViewHolder {
         private ImageView bookingImage;
         private TextView bookingTitle;
-        private TextView bookingDesc;
+        private TextView bookingDescription;
+        private Button bookingButton;
         BookingModelHolder(@NonNull View itemView) {
             super(itemView);
             bookingImage = itemView.findViewById(R.id.booking_image);
             bookingTitle = itemView.findViewById(R.id.booking_title);
-            bookingDesc = itemView.findViewById(R.id.booking_desc);
+            bookingDescription = itemView.findViewById(R.id.booking_desc);
+            bookingButton = itemView.findViewById(R.id.booking_button);
         }
     }
 }

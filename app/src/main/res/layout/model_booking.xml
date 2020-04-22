@@ -1,17 +1,16 @@
-<androidx.cardview.widget.CardView
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="#FFFEFE"
-    app:cardCornerRadius="5dp"
     android:layout_marginBottom="3dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:cardBackgroundColor="#FFFEFE"
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="3dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
@@ -19,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:layout_marginTop="5dp"
-            android:src="@drawable/helicopter"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            android:src="@drawable/helicopter" />
 
         <TextView
             android:id="@+id/booking_title"
@@ -40,13 +39,15 @@
             android:textColor="#181819"
             android:textSize="16sp"
             android:textStyle="normal" />
-
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/booking_button"
             android:layout_height="35dp"
+            android:layout_width="wrap_content"
             android:layout_margin="3dp"
-            android:background="@drawable/book_now_button"
-            android:text="@string/book_now"
-            android:textAllCaps="true" />
+            android:layout_marginTop="15dp"
+            android:background="@drawable/subscribe_edit_text_style"
+            android:focusable="true"
+            android:padding="5dp"
+            android:text="@string/book_now" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

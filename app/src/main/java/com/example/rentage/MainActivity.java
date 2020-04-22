@@ -3,37 +3,27 @@ package com.example.rentage;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.example.rentage.adapter.BookingModelAdapter;
-import com.example.rentage.adapter.FeaturedDealsAdapter;
-import com.example.rentage.adapter.ViewPagerAdapter;
+
+import com.example.rentage.adapter.BookingAndFeaturedViewPagerAdapter;
 import com.example.rentage.fragments.FeaturedFragment;
 import com.example.rentage.fragments.HomeFragment;
-import com.example.rentage.model.BookingModel;
-import com.example.rentage.model.FeaturedDealsModel;
+
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
 import com.google.android.material.tabs.TabLayout;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
@@ -97,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        BookingAndFeaturedViewPagerAdapter adapter = new BookingAndFeaturedViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new HomeFragment(), "Services");
         adapter.addFrag(new FeaturedFragment(), "Featured");
         viewPager.setAdapter(adapter);

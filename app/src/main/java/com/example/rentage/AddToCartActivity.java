@@ -42,7 +42,7 @@ public class AddToCartActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("Back To Home");
+        getSupportActionBar().setTitle("");
         featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
         mayAlsoLike();
     }
