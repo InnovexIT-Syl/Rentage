@@ -21,23 +21,12 @@ import java.util.List;
 
 public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdapter.FeaturedDealsHolder> {
 
-//    List<Integer> featuredImageList = new ArrayList<>();
-//    List<String> featuredNameList = new ArrayList<>();
-//    List<String> featuredPriceList = new ArrayList<>();
-//    private Context context;
-//
-//    public FeaturedDealsAdapter(Context applicationContext, List<String> featuredNameList, List<String> featuredPriceList, List<Integer> featuredImageList) {
-//        this.featuredNameList = featuredNameList;
-//        this.featuredPriceList = featuredPriceList;
-//        this.featuredImageList = featuredImageList;
-//        this.context = applicationContext;
-//    }
     private List<FeaturedDealsModel> featuredDealsList;
     private Context context;
 
     public FeaturedDealsAdapter(Context context, List<FeaturedDealsModel> featuredDealsList) {
         this.context = context;
-     this.featuredDealsList = featuredDealsList;
+        this.featuredDealsList = featuredDealsList;
 
     }
 
@@ -53,18 +42,18 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FeaturedDealsHolder holder, int position) {
-       holder.featuredImage.setImageResource(featuredDealsList.get(position).getFeaturedImage());
-       holder.featuredName.setText(featuredDealsList.get(position).getFeaturedName());
-       holder.featuredCost.setText("AED "+ featuredDealsList.get(position).getFeaturedPrice());
+        holder.featuredImage.setImageResource(featuredDealsList.get(position).getFeaturedImage());
+        holder.featuredName.setText(featuredDealsList.get(position).getFeaturedName());
+        holder.featuredCost.setText("AED " + featuredDealsList.get(position).getFeaturedPrice());
 
-       holder.itemView.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(context, AddToCartActivity.class);
-               intent.putExtra("ID","");
-               context.startActivity(intent);
-           }
-       });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AddToCartActivity.class);
+                intent.putExtra("ID", "");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -76,6 +65,7 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
         private ImageView featuredImage;
         private TextView featuredName;
         private TextView featuredCost;
+
         FeaturedDealsHolder(@NonNull View itemView) {
             super(itemView);
 

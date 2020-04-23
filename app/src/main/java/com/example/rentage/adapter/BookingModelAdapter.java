@@ -39,7 +39,7 @@ public class BookingModelAdapter extends RecyclerView.Adapter<BookingModelAdapte
     public void onBindViewHolder(@NonNull BookingModelHolder holder, int position) {
         holder.bookingImage.setImageResource(bookingModelList.get(position).getBookingImage());
         holder.bookingTitle.setText(bookingModelList.get(position).getBookingTitle());
-        holder.bookingDescription.setText(bookingModelList.get(position).getBookingDeails());
+        holder.bookingDescription.setText(bookingModelList.get(position).getBookingDetails());
 
         holder.bookingButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.example.rentage.model.FeaturedDealsModel;
@@ -20,6 +21,7 @@ public class AddToCartActivity extends AppCompatActivity {
     private Toolbar toolbarCart;
     List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
     private RecyclerView featuredDealsRecyclerview;
+    Button addToCartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class AddToCartActivity extends AppCompatActivity {
 
     private void initialize() {
 
-        toolbarCart = findViewById(R.id.toolbar_home);
+        toolbarCart = findViewById(R.id.toolbar_add_to_cart);
+        addToCartButton = findViewById(R.id.addToCartButton);
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {
@@ -44,6 +47,13 @@ public class AddToCartActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("");
         featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
+
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AddedCart.class));
+            }
+        });
         mayAlsoLike();
     }
 

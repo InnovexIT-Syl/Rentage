@@ -4,13 +4,13 @@ public class BookingModel {
     private String id;
     private int bookingImage ;
     private int bookingTitle;
-    private int bookingDeails;
+    private int bookingDetails;
 
-    public BookingModel(String id, int bookingImage, int bookingTitle, int bookingDeails) {
+    public BookingModel(String id, int bookingImage, int bookingTitle, int bookingDetails) {
         this.id = id;
         this.bookingImage = bookingImage;
         this.bookingTitle = bookingTitle;
-        this.bookingDeails = bookingDeails;
+        this.bookingDetails = bookingDetails;
     }
 
     public String getId() {
@@ -37,11 +37,11 @@ public class BookingModel {
         this.bookingTitle = bookingTitle;
     }
 
-    public int getBookingDeails() {
-        return bookingDeails;
+    public int getBookingDetails() {
+        return bookingDetails;
     }
 
-    public void setBookingDeails(int bookingDeails) {
-        this.bookingDeails = bookingDeails;
+    public void setBookingDetails(int bookingDetails) {
+        this.bookingDetails = bookingDetails;
     }
 }

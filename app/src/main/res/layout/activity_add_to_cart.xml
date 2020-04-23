@@ -9,7 +9,7 @@
     tools:context=".AddToCartActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_home"
+        android:id="@+id/toolbar_add_to_cart"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:text="Range Rover Sport"
                         android:textColor="#181819"
-                        android:textSize="28dp" />
+                        android:textSize="27dp" />
 
                     <TextView
                         android:id="@+id/add_to_cart_price"
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:text="AED 1,000.00"
                         android:textColor="#2B2B2C"
-                        android:textSize="23dp" />
+                        android:textSize="22dp" />
 
                     <Button
 
@@ -93,7 +93,7 @@
                         android:layout_marginTop="5dp"
                         android:text="Before paying, please contact with us..."
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
 
                     <TextView
 
@@ -101,35 +101,35 @@
                         android:layout_height="wrap_content"
                         android:text="AED 1,000 per Day (VAT inclusive)"
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Year: 2018"
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Seats: 5"
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Doors: 4"
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gear: Automatic"
                         android:textColor="#181819"
-                        android:textSize="20dp" />
+                        android:textSize="19dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <LinearLayout

@@ -43,8 +43,11 @@ dependencies {
     implementation "com.github.firdausmaulan:GlideSlider:1.5.1"
 
     // material search view library
-    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+//    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
-    // floating navigation libraray
+    // floating navigation library
     implementation 'com.github.andremion:floatingnavigationview:1.2.0'
+
+    // elegant button library
+    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 }
