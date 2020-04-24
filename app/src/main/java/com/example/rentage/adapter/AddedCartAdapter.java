@@ -34,18 +34,45 @@ public class AddedCartAdapter extends RecyclerView.Adapter<AddedCartAdapter.Adde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddedCartAdapter.AddedCartHolder holder, int position) {
-       holder.cartImage.setImageResource(addedCartModelList.get(position).getCartImage());
-       holder.cartModelName.setText(addedCartModelList.get(position).getCartModelName());
-       holder.cost.setText(addedCartModelList.get(position).getCost());
-       holder.totalCost.setText(addedCartModelList.get(position).getTotalCost());
+    public void onBindViewHolder(@NonNull final AddedCartAdapter.AddedCartHolder holder, final int position) {
+        holder.cartImage.setImageResource(addedCartModelList.get(position).getCartImage());
+        holder.cartModelName.setText(addedCartModelList.get(position).getCartModelName());
+        holder.cost.setText(addedCartModelList.get(position).getCost());
+        holder.totalCost.setText(addedCartModelList.get(position).getTotalCost());
+        holder.quantity.setText(addedCartModelList.get(position).getQuantity());
 
-       holder.removeCart.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        holder.removeCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-           }
-       });
+            }
+        });
+
+        holder.positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(addedCartModelList.get(position).getQuantity());
+                quantity++;
+                addedCartModelList.get(position).setQuantity(String.valueOf(quantity));
+                holder.quantity.setText(addedCartModelList.get(position).getQuantity());
+            }
+        });
+
+        holder.negativeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(addedCartModelList.get(position).getQuantity());
+                if (quantity == 0) {
+                    addedCartModelList.get(position).setQuantity(String.valueOf(quantity));
+                    holder.quantity.setText(addedCartModelList.get(position).getQuantity());
+                } else {
+                    quantity--;
+                    addedCartModelList.get(position).setQuantity(String.valueOf(quantity));
+                    holder.quantity.setText(addedCartModelList.get(position).getQuantity());
+                }
+
+            }
+        });
     }
 
     @Override
@@ -58,17 +85,22 @@ public class AddedCartAdapter extends RecyclerView.Adapter<AddedCartAdapter.Adde
         private ImageView cartImage;
         private TextView cartModelName;
         private TextView cost;
-        private Button quantity;
+        private TextView quantity;
         private Button removeCart;
+        private Button positiveButton;
+        private Button negativeButton;
         private TextView totalCost;
+
         public AddedCartHolder(@NonNull View itemView) {
             super(itemView);
             cartImage = itemView.findViewById(R.id.added_cart_image);
             cartModelName = itemView.findViewById(R.id.added_cart_image_name);
             cost = itemView.findViewById(R.id.added_cart_cost);
-            //quantity = itemView.findViewById(R.id.quantity_number_button);
+            quantity = itemView.findViewById(R.id.quantity);
             removeCart = itemView.findViewById(R.id.cart_remove_button);
             totalCost = itemView.findViewById(R.id.rent_cart_total_cost);
+            positiveButton = itemView.findViewById(R.id.positive_button);
+            negativeButton = itemView.findViewById(R.id.negative_button);
         }
     }
 }

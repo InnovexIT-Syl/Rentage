@@ -63,7 +63,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_weight=".18"
                     android:text="Product"
-                    android:textColor="#86868A"
+                    android:textColor="#181819"
                     android:textSize="21dp" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_gravity="center"
                     android:layout_weight=".15"
                     android:text="Price"
-                    android:textColor="#13F613"
+                    android:textColor="#059393"
                     android:textSize="21dp" />
 
                 <TextView

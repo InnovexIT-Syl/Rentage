@@ -48,6 +48,4 @@ dependencies {
     // floating navigation library
     implementation 'com.github.andremion:floatingnavigationview:1.2.0'
 
-    // elegant button library
-    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 }
