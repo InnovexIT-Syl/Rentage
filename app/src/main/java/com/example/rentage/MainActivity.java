@@ -2,9 +2,22 @@ package com.example.rentage;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup.LayoutParams;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -31,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     ViewPager viewPager;
     private Toolbar toolbarHome;
     private SliderLayout slider;
+    private PopupWindow popupWindow;
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         toolbarHome = findViewById(R.id.toolbar_home);
         viewPager = findViewById(R.id.tab_viewpager);
-
+        relativeLayout = findViewById(R.id.relative_layout);
 
         setSupportActionBar(toolbarHome);
         toolbarHome.setTitleTextColor(Color.WHITE);
@@ -93,7 +108,49 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                return true;
+            case R.id.shopping:
+                // Initialize a new instance of LayoutInflater service
+                LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
+                // Inflate the custom layout/view
+                View customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
+                customView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.popupanim));
+                popupWindow = new PopupWindow(
+                        customView,
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT
+                );
+
+                popupWindow.setFocusable(true);
+                popupWindow.update();
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                if (Build.VERSION.SDK_INT >= 21) {
+                    popupWindow.setElevation(5.0f);
+                }
+
+                Button closeButton = customView.findViewById(R.id.button_close);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Dismiss the popup window
+                        popupWindow.dismiss();
+                    }
+                });
+
+                popupWindow.showAtLocation(relativeLayout, Gravity.TOP, 0, 0);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @SuppressLint("CheckResult")
     private void slider() {
@@ -150,8 +207,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-
 
 
     @Override

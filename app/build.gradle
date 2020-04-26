@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.rentage"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -47,5 +47,8 @@ dependencies {
 
     // floating navigation library
     implementation 'com.github.andremion:floatingnavigationview:1.2.0'
+
+    // shape of view
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.3'
 
 }

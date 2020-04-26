@@ -21,7 +21,7 @@ public class AddToCartActivity extends AppCompatActivity {
     private Toolbar toolbarCart;
     List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
     private RecyclerView featuredDealsRecyclerview;
-    Button addToCartButton;
+    Button addToCartButton,byeItNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,8 @@ public class AddToCartActivity extends AppCompatActivity {
 
         toolbarCart = findViewById(R.id.toolbar_add_to_cart);
         addToCartButton = findViewById(R.id.addToCartButton);
+        byeItNow = findViewById(R.id.byeItNowButton);
+
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {
@@ -52,6 +54,12 @@ public class AddToCartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),AddedCart.class));
+            }
+        });
+        byeItNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),InfoCheckoutActivity.class));
             }
         });
         mayAlsoLike();
