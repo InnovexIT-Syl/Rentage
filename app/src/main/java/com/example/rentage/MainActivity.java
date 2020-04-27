@@ -5,23 +5,26 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.Menu;
 import android.view.ViewGroup.LayoutParams;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -35,18 +38,23 @@ import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
 import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
-        ViewPagerEx.OnPageChangeListener {
+        ViewPagerEx.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
 
     ViewPager viewPager;
     private Toolbar toolbarHome;
     private SliderLayout slider;
     private PopupWindow popupWindow;
     RelativeLayout relativeLayout;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,17 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         toolbarHome = findViewById(R.id.toolbar_home);
         viewPager = findViewById(R.id.tab_viewpager);
         relativeLayout = findViewById(R.id.relative_layout);
+
+        //drawerLayout = findViewById(R.id.relative_layout);
+//        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.open, R.string.close);
+//
+//        navigationView = findViewById(R.id.navigationId);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+//        actionBarDrawerToggle.syncState();
+
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setSupportActionBar(toolbarHome);
         toolbarHome.setTitleTextColor(Color.WHITE);
@@ -109,6 +128,37 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         viewPager.setAdapter(adapter);
     }
 
+//    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+//        // inflate menu_main
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        menu.findItem(R.id.shopping).setVisible(true);
+//        // search view to search posts by posts title/description
+//        MenuItem item = menu.findItem(R.id.search);
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+//
+//        // search listener
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // called when user press search button
+//                if (!TextUtils.isEmpty(query)){
+//                }else {
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                // called as and when user press any letter
+//                if (!TextUtils.isEmpty(newText)){
+//                }else {
+//                }
+//                return false;
+//            }
+//        });
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -131,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 popupWindow.setFocusable(true);
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                popupWindow.update(0,0, LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+                popupWindow.update(0, 0, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if (Build.VERSION.SDK_INT >= 21) {
                     popupWindow.setElevation(5.0f);
                 }
@@ -235,5 +285,14 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
