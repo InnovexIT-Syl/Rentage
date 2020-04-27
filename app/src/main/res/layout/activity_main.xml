@@ -23,13 +23,14 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:contentScrim="?attr/colorPrimary"
+                    app:contentScrim="@color/colorPrimary"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <com.glide.slider.library.SliderLayout
@@ -41,11 +42,13 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     app:tabMode="fixed"
+                    app:tabTextAppearance="@style/MyCustomTabText"
+                    app:tabSelectedTextColor="@color/colorPrimary"
                     app:tabTextColor="@color/colorPrimary"
-                    app:tabGravity="center"/>
+                    app:tabGravity="fill"/>
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager

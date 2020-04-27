@@ -30,6 +30,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.request.RequestOptions;
 
 import com.example.rentage.adapter.BookingAndFeaturedViewPagerAdapter;
+import com.example.rentage.fragments.CarFragment;
 import com.example.rentage.fragments.FeaturedFragment;
 import com.example.rentage.fragments.HomeFragment;
 
@@ -42,6 +43,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
@@ -99,6 +101,13 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     static void tabActions(TabLayout tabLayout, final ViewPager viewPager) {
         tabLayout.setupWithViewPager(viewPager);
 
+//        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_home);
+//        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.ic_car);
+//        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.ic_car);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("Home");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Featured");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("Car");
+
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -123,8 +132,9 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
     private void setupViewPager(ViewPager viewPager) {
         BookingAndFeaturedViewPagerAdapter adapter = new BookingAndFeaturedViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new HomeFragment(), "Services");
-        adapter.addFrag(new FeaturedFragment(), "Featured");
+        adapter.addFrag(new HomeFragment(), "0");
+        adapter.addFrag(new FeaturedFragment(), "1");
+        adapter.addFrag(new CarFragment(), "2");
         viewPager.setAdapter(adapter);
     }
 
