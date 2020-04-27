@@ -2,17 +2,18 @@ package com.example.rentage;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -119,23 +120,23 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
                 // Inflate the custom layout/view
                 View customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
-                customView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.popupanim));
+//                customView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in));
                 popupWindow = new PopupWindow(
                         customView,
                         LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT
                 );
+                popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
 
                 popupWindow.setFocusable(true);
-                popupWindow.update();
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+                popupWindow.update(0,0, LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
                 if (Build.VERSION.SDK_INT >= 21) {
                     popupWindow.setElevation(5.0f);
                 }
 
-                Button closeButton = customView.findViewById(R.id.button_close);
+                ImageButton closeButton = customView.findViewById(R.id.button_close);
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     }
                 });
 
-                popupWindow.showAtLocation(relativeLayout, Gravity.TOP, 0, 0);
+                popupWindow.showAtLocation(relativeLayout, Gravity.TOP, 33, 120);
 
                 return true;
             default:

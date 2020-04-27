@@ -1,85 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_custom_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/subscribe_button_style"
-    android:padding="2dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
-
-        android:id="@+id/data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif"
-        android:padding="10dp"
-        android:text="Add Data"
-        android:textStyle="bold" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/data"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textColor="#DFD3D3"
-            android:textSize="25dp"/>
-
-        <EditText
+        <com.daasuu.bl.BubbleLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="5dp"
-            android:inputType="numberPassword"
-            android:padding="5dp"
-            android:textColor="#0A0A0A"/>
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other Information"
-            android:textColor="#DFD3D3"
-            android:textSize="25dp"/>
+            app:bl_arrowDirection="top"
+            app:bl_arrowHeight="17dp"
+            app:bl_arrowPosition="290dp"
+            app:bl_arrowWidth="17dp"
+            app:bl_bubbleColor="#fff"
+            app:bl_cornersRadius="10dp"
+            app:bl_strokeColor="#E6E5E5"
+            app:bl_strokeWidth="1dp">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="5dp"
-            android:inputType="numberPassword"
-            android:padding="5dp"
-            android:textColor="#0A0A0A"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".8"
+                        android:layout_height="wrap_content"
+                        android:text="Just added to your cart"
+                        android:textColor="#181819"
+                        android:textStyle="normal"
+                        android:textSize="16dp" />
+                    <ImageButton
+                        android:background="@drawable/ic_close_black_24dp"
+                        android:id="@+id/button_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFF"
+                        android:contentDescription="TODO" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+                </LinearLayout>
+                <View
+                    android:layout_marginBottom="2dp"
+                    android:background="#E6E5E5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
+                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="3dp">
 
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:text="Submit"
-                android:textAllCaps="false"
-                android:textColor="#FFFF" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
-            <Button
-                android:id="@+id/button_close"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="#FFFF"
+                        <ImageView
+                            android:id="@+id/rent_car_image"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
+                            android:layout_height="60dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/todo"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/yachts"/>
 
-                />
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/rent_car_name"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:text="Mercedes G Class"
+                            android:textColor="#39393A"
+                            android:textSize="14dp" />
 
-    </LinearLayout>
+                        <TextView
+                            android:id="@+id/quantity_cart"
+                            android:layout_width="0dp"
+                            android:layout_weight=".1"
+                            android:layout_height="wrap_content"
+                            android:text="Qty : 1"
+                            android:textColor="#39393A"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/view_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:padding="4dp"
+                        android:background="@drawable/subscribe_button_style"
+                        android:text="VIEW CART (2)"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFF" />
+
+                    <Button
+                        android:id="@+id/continue_shopping"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:padding="4dp"
+                        android:background="@drawable/subscribe_edit_text_style"
+                        android:text="Continue shopping"
+                        android:layout_marginTop="5dp"
+                        android:textAllCaps="false"
+                        android:textColor="#39393A" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </com.daasuu.bl.BubbleLayout>
+
 </RelativeLayout>
