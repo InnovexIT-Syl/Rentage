@@ -51,7 +51,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mijanur Rahman"
+            android:text="Customer Name"
             android:textColor="#252424"
             android:textSize="20dp" />
 
@@ -59,7 +59,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="mijanurrahman314@gmail.com"
+            android:text="example@mailserver.domain"
             android:textColor="#555252"
             android:textSize="17dp" />
     </LinearLayout>

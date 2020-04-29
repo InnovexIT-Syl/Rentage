@@ -107,7 +107,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Do not have account? Sign up below.."
+                            android:text="Do not have account? Sign up bellow.."
                             android:textColor="#807C7C"
                             android:textSize="15dp" />
                     </LinearLayout>
