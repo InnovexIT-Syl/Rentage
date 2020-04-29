@@ -17,7 +17,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_home">
+        android:layout_below="@+id/toolbar_rent_specific">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
