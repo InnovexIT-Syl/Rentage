@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -52,11 +53,11 @@ public class AddedCartActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_view, menu);
+        MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.sub_menu, menu);
         menu.findItem(R.id.about).setVisible(true);
-        menu.findItem(R.id.nav_home).setVisible(false);
         menu.findItem(R.id.settings).setVisible(true);
-        menu.findItem(R.id.login_sign_in).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }

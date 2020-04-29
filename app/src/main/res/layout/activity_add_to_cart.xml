@@ -160,15 +160,6 @@
                         android:layout_height="wrap_content">
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-
-                <TextView
-                    android:layout_margin="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="© 2020, rentage"
-                    android:textColor="#181819"
-                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

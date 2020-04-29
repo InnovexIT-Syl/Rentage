@@ -9,7 +9,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,14 +69,26 @@ public class RentSpecificActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_view, menu);
+       getMenuInflater().inflate(R.menu.sub_menu, menu);
+
+//        menu.add(0, 1, 1, menuIconWithText(getResources().getDrawable(R.drawable.ic_contact_mail_black_24dp),getResources().getString(R.string.action_profile)));
+//        menu.add(0, 2, 2, menuIconWithText(getResources().getDrawable(R.drawable.ic_settings_black_24dp), "Settings"));
+//        menu.add(0, 3, 3, menuIconWithText(getResources().getDrawable(R.drawable.ic_logout_24dp), "Log out"));
         menu.findItem(R.id.about).setVisible(true);
-        menu.findItem(R.id.nav_home).setVisible(false);
         menu.findItem(R.id.settings).setVisible(true);
-        menu.findItem(R.id.login_sign_in).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);
+//        return true;
     }
+//    private CharSequence menuIconWithText(Drawable r, String title) {
+//
+//        r.setBounds(0, 0, r.getIntrinsicWidth(), r.getIntrinsicHeight());
+//        SpannableString sb = new SpannableString("    " + title);
+//        ImageSpan imageSpan = new ImageSpan(r, ImageSpan.ALIGN_BOTTOM);
+//        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//        return sb;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

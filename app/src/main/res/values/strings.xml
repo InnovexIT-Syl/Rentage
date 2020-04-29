@@ -17,6 +17,8 @@
     <string name="menu_item_about">About</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+    <string name="action_profile">About</string>
     <string-array name="query_suggestions">
         <item>Furniture</item>
         <item>Funny</item>

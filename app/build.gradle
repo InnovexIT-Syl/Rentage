@@ -51,4 +51,7 @@ dependencies {
     // shape of view
     implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
 
+    // Image crop Library
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+
 }

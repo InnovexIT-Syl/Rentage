@@ -2,8 +2,10 @@ package com.example.rentage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,13 +50,13 @@ public class InfoCheckoutActivity extends AppCompatActivity {
 
         implementSpinnerCountry();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_view, menu);
+        getMenuInflater().inflate(R.menu.sub_menu, menu);
+
         menu.findItem(R.id.about).setVisible(true);
-        menu.findItem(R.id.nav_home).setVisible(false);
         menu.findItem(R.id.settings).setVisible(true);
-        menu.findItem(R.id.login_sign_in).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
