@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        android:background="@drawable/subscribe_button_style"
+        android:background="@drawable/nav_header_style"
         android:orientation="vertical">
 
         <TextView
