@@ -58,7 +58,7 @@
                         android:background="@drawable/subscribe_edit_text_style"
                         android:hint="Email or Mobile phone number"
                         android:textStyle="normal"
-                        android:padding="8dp"
+                        android:paddingLeft="10dp"
                         android:textColor="#2B2B2C" />
 
                     <CheckBox
@@ -89,7 +89,7 @@
                             android:background="@drawable/subscribe_edit_text_style"
                             android:hint="First name"
                             android:inputType="text"
-                            android:padding="7dp"
+                            android:paddingLeft="10dp"
                             android:textColor="#2B2B2C"/>
 
                         <EditText
@@ -101,7 +101,7 @@
                             android:background="@drawable/subscribe_edit_text_style"
                             android:hint="Last name"
                             android:inputType="text"
-                            android:padding="7dp"
+                            android:paddingLeft="10dp"
                             android:textColor="#2B2B2C" />
                     </LinearLayout>
 
@@ -113,7 +113,7 @@
                         android:background="@drawable/subscribe_edit_text_style"
                         android:hint="Address"
                         android:inputType="text"
-                        android:padding="8dp"
+                        android:paddingLeft="10dp"
                         android:textColor="#2B2B2C"/>
 
                     <EditText
@@ -124,7 +124,7 @@
                         android:background="@drawable/subscribe_edit_text_style"
                         android:hint="Apartment,suite,etc(optional)"
                         android:inputType="text"
-                        android:padding="8dp"
+                        android:paddingLeft="10dp"
                         android:textColor="#2B2B2C" />
 
                     <EditText
@@ -135,7 +135,7 @@
                         android:background="@drawable/subscribe_edit_text_style"
                         android:hint="City"
                         android:inputType="text"
-                        android:padding="8dp"
+                        android:paddingLeft="10dp"
                         android:textColor="#2B2B2C"/>
 
                     <LinearLayout
@@ -178,7 +178,7 @@
                                 android:background="@drawable/subscribe_edit_text_style"
                                 android:hint="Postal code"
                                 android:inputType="text"
-                                android:padding="8dp"
+                                android:paddingLeft="10dp"
                                 android:textColor="#2B2B2C"/>
                         </LinearLayout>
 
