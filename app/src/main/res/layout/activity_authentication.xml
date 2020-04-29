@@ -188,18 +188,19 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <Button
+                        <TextView
                             android:id="@+id/chooseProfilePicture"
                             android:layout_marginTop="9dp"
                             android:background="@drawable/subscribe_edit_text_style"
                             android:focusable="true"
-                            android:padding="5dp"
+                            android:padding="8dp"
+                            android:drawableLeft="@drawable/ic_image_black_24dp"
                             android:textAllCaps="false"
                             android:text="Choose a profile picture"
                             android:textColor="#535151"
                             android:textSize="20dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="45dp"/>
                         <ImageView
                             android:layout_marginTop="9dp"
                             android:id="@+id/profile_image"
@@ -213,8 +214,8 @@
                             android:id="@+id/byeItNowButton"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@drawable/subscribe_button_style"
                             android:focusable="true"
                             android:padding="5dp"
