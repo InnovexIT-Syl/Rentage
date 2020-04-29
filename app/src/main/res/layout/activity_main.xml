@@ -71,7 +71,7 @@
         android:background="#fff"
         app:itemIconSize="25dp"
         app:itemIconTint="@color/colorPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextAppearance="@style/menu_item_style"
