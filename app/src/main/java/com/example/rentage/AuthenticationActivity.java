@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -29,7 +30,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     private Toolbar toolbarLogSign;
 
     private ImageView profileImage;
-    private Button chooseProfileImage;
+    private TextView chooseProfileImage;
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 400;
     private static final int IMAGE_PICK_GALLERY_CODE = 1000;
