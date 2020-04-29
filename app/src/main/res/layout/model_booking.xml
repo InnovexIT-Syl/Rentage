@@ -47,7 +47,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/subscribe_edit_text_style"
             android:focusable="true"
-            android:padding="5dp"
+            android:padding="6dp"
             android:text="@string/book_now" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

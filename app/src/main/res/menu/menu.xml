@@ -5,7 +5,8 @@
         android:id="@+id/search"
         android:icon="@drawable/ic_action_search"
         android:title="Search"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/shopping"
         android:icon="@drawable/ic_shopping_basket_black_24dp"
