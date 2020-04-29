@@ -1,5 +1,6 @@
 package com.example.rentage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.rentage.adapter.BookingAndFeaturedViewPagerAdapter;
@@ -21,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RentSpecificActivity extends AppCompatActivity {
 
@@ -49,7 +53,7 @@ public class RentSpecificActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Make your choice");
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.tab_viewpager);
@@ -59,10 +63,34 @@ public class RentSpecificActivity extends AppCompatActivity {
         tabActions(tabLayout, viewPager);
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_view, menu);
+        menu.findItem(R.id.about).setVisible(true);
+        menu.findItem(R.id.nav_home).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(true);
+        menu.findItem(R.id.login_sign_in).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(true);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                startActivity(new Intent(getApplicationContext(),AboutActivity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     static void tabActions(TabLayout tabLayout, final ViewPager viewPager) {
         tabLayout.setupWithViewPager(viewPager);
 
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_car);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.icon_helicopter);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.icon_ship_);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

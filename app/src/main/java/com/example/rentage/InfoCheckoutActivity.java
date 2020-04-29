@@ -1,10 +1,13 @@
 package com.example.rentage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,11 +44,31 @@ public class InfoCheckoutActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Information checkout");
 
         implementSpinnerCountry();
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_view, menu);
+        menu.findItem(R.id.about).setVisible(true);
+        menu.findItem(R.id.nav_home).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(true);
+        menu.findItem(R.id.login_sign_in).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(true);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                startActivity(new Intent(getApplicationContext(),AboutActivity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void implementSpinnerCountry() {
         countryArray = new String[]{"Bangladesh","India","Pakistan","Bhutan","Nepal"};
         adapter = new ArrayAdapter<>(this, R.layout.sample_view, R.id.sampleTextId, countryArray);

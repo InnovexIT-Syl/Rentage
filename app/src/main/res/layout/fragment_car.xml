@@ -13,7 +13,7 @@
         android:layout_marginTop="3dp"
         android:text="Rent Car"
         android:textAllCaps="false"
-        android:textColor="#272626"
+        android:textColor="#373535"
         android:textSize="30dp" />
 
     <TextView

@@ -1,36 +1,36 @@
 package com.example.rentage;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.ViewGroup.LayoutParams;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
 
 import com.example.rentage.adapter.BookingAndFeaturedViewPagerAdapter;
-import com.example.rentage.fragments.CarFragment;
 import com.example.rentage.fragments.FeaturedFragment;
 import com.example.rentage.fragments.HomeFragment;
 
@@ -46,17 +46,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
-        ViewPagerEx.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
+        ViewPagerEx.OnPageChangeListener {
 
     ViewPager viewPager;
     private Toolbar toolbarHome;
     private SliderLayout slider;
     private PopupWindow popupWindow;
     RelativeLayout relativeLayout;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    NavigationView navigationView;
 
+    private DrawerLayout drawerLayout;
+    private View content;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +73,18 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         viewPager = findViewById(R.id.tab_viewpager);
         relativeLayout = findViewById(R.id.relative_layout);
 
-        //drawerLayout = findViewById(R.id.relative_layout);
-//        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.open, R.string.close);
-//
-//        navigationView = findViewById(R.id.navigationId);
-//        navigationView.setNavigationItemSelectedListener(this);
-//
-//        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-//        actionBarDrawerToggle.syncState();
-
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         setSupportActionBar(toolbarHome);
         toolbarHome.setTitleTextColor(Color.WHITE);
-        toolbarHome.setTitle("Home");
+//        toolbarHome.setTitle("Home");
+        getSupportActionBar().setTitle("Home");
         slider = findViewById(R.id.slider);
+
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         if (viewPager != null) {
             setupViewPager(viewPager);
@@ -95,19 +93,64 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabActions(tabLayout, viewPager);
+
+        setupDrawerLayout();
+        drawerToggle = setupDrawerToggle();
+
         slider();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbarHome, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void setupDrawerLayout() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        break;
+                    case R.id.login_sign_in:
+                        startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
+                        finish();
+                        break;
+                    case R.id.about:
+                        startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     static void tabActions(TabLayout tabLayout, final ViewPager viewPager) {
         tabLayout.setupWithViewPager(viewPager);
 
-//        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_home);
-//        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.ic_car);
-//        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.ic_car);
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("Home");
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Featured");
-        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("Car");
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.ic_home);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.icon_all_featured);
 
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("HOME");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("FEATURED");
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -115,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 viewPager.setCurrentItem(tab.getPosition());
                 viewPager.getVerticalScrollbarPosition();
             }
-
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -129,45 +171,12 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         });
     }
 
-
     private void setupViewPager(ViewPager viewPager) {
         BookingAndFeaturedViewPagerAdapter adapter = new BookingAndFeaturedViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new HomeFragment(), "0");
         adapter.addFrag(new FeaturedFragment(), "1");
-        adapter.addFrag(new CarFragment(), "2");
         viewPager.setAdapter(adapter);
     }
-
-//    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-//        // inflate menu_main
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        menu.findItem(R.id.shopping).setVisible(true);
-//        // search view to search posts by posts title/description
-//        MenuItem item = menu.findItem(R.id.search);
-//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-//
-//        // search listener
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // called when user press search button
-//                if (!TextUtils.isEmpty(query)){
-//                }else {
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                // called as and when user press any letter
-//                if (!TextUtils.isEmpty(newText)){
-//                }else {
-//                }
-//                return false;
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -180,6 +189,23 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
                 // Inflate the custom layout/view
                 View customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
+                Button continueShopping = customView.findViewById(R.id.continue_shopping);
+                Button viewYourCart = customView.findViewById(R.id.view_cart);
+
+                continueShopping.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(),AddToCartActivity.class));
+                        finish();
+                    }
+                });
+                viewYourCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(),AddedCartActivity.class));
+                        finish();
+                    }
+                });
 //                customView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in));
                 popupWindow = new PopupWindow(
                         customView,
@@ -205,8 +231,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     }
                 });
 
-                popupWindow.showAtLocation(relativeLayout, Gravity.TOP, 33, 120);
-
+                popupWindow.showAtLocation(relativeLayout, Gravity.CENTER_VERTICAL, 0, 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -215,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
     @SuppressLint("CheckResult")
     private void slider() {
-
         ArrayList<Integer> listImage = new ArrayList<>();
         ArrayList<String> listName = new ArrayList<>();
 
@@ -229,17 +253,12 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         listImage.add(R.drawable.yachts);
         listName.add("Mercedes G Class");
 
-
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.centerCrop();
-        //.diskCacheStrategy(DiskCacheStrategy.NONE)
-        //.placeholder(R.drawable.placeholder)
-        //.error(R.drawable.placeholder);
 
         for (int i = 0; i < listImage.size(); i++) {
             TextSliderView sliderView = new TextSliderView(this);
             // if you want show image only / without description text use DefaultSliderView instead
-            // initialize SliderLayout
             sliderView
                     .image(listImage.get(i))
                     .description(listName.get(i))
@@ -254,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         }
 
         // set Slider Transition Animation
-        slider.setPresetTransformer(SliderLayout.Transformer.Foreground2Background);
+        slider.setPresetTransformer(SliderLayout.Transformer.Stack);
 
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         slider.setCustomAnimation(new DescriptionAnimation());
@@ -263,12 +282,10 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         slider.stopCyclingWhenTouch(false);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
-
 
     @Override
     protected void onStop() {
@@ -297,12 +314,4 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

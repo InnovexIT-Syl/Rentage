@@ -32,6 +32,7 @@
                 android:background="@android:color/white"
                 app:tabGravity="center"
                 app:tabMode="fixed"
+                app:tabInlineLabel="true"
                 app:tabTextColor="@color/colorPrimary">
             </com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.AppBarLayout>
