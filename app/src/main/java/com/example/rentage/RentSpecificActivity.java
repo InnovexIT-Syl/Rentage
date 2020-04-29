@@ -74,7 +74,7 @@ public class RentSpecificActivity extends AppCompatActivity {
 //        menu.add(0, 1, 1, menuIconWithText(getResources().getDrawable(R.drawable.ic_contact_mail_black_24dp),getResources().getString(R.string.action_profile)));
 //        menu.add(0, 2, 2, menuIconWithText(getResources().getDrawable(R.drawable.ic_settings_black_24dp), "Settings"));
 //        menu.add(0, 3, 3, menuIconWithText(getResources().getDrawable(R.drawable.ic_logout_24dp), "Log out"));
-        menu.findItem(R.id.about).setVisible(true);
+        menu.findItem(R.id.about).setVisible(false);
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);

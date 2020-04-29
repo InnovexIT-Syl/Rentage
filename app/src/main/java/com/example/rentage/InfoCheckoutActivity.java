@@ -55,7 +55,7 @@ public class InfoCheckoutActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sub_menu, menu);
 
-        menu.findItem(R.id.about).setVisible(true);
+        menu.findItem(R.id.about).setVisible(false);
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);
