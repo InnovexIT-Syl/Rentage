@@ -46,7 +46,7 @@ public class RentSpecificActivity extends AppCompatActivity {
 
     private void initialize() {
 
-        toolbarCart = findViewById(R.id.toolbar_home);
+        toolbarCart = findViewById(R.id.toolbar_rent_specific);
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {

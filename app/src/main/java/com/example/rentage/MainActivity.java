@@ -188,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
 
-        menu.findItem(R.id.search).setVisible(false);
-        menu.findItem(R.id.shopping).setVisible(false);
+//        menu.findItem(R.id.search).setVisible(true);
+//        menu.findItem(R.id.shopping).setVisible(true);
 
         MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) menuItem.getActionView();
