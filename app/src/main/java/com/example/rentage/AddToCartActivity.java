@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.rentage.adapter.CartAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
@@ -36,10 +37,12 @@ public class AddToCartActivity extends AppCompatActivity {
     private Toolbar toolbarCart;
     private List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
     private List<CartModel> cartModelList = new ArrayList<>();
-    private RecyclerView featuredDealsRecyclerview,cart_recycler_view;
+    private RecyclerView featuredDealsRecyclerview, cart_recycler_view;
     Button addToCartButton, byeItNow;
     private PopupWindow popupWindow;
-    LinearLayout linearLayout;
+    private LinearLayout linearLayout;
+    private View customView;
+    private TextView haveCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +71,12 @@ public class AddToCartActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Add on your cart");
         featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
-
+        initCustomView();
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //addCart();
-               showCartWindow();
+                addCart();
+                showCartWindow();
             }
         });
         byeItNow.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,13 @@ public class AddToCartActivity extends AppCompatActivity {
         mayAlsoLike();
     }
 
+    private void initCustomView() {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
+        haveCart = customView.findViewById(R.id.haveCart);
+        cart_recycler_view = customView.findViewById(R.id.cart_recycler_view);
+    }
+
     private void addCart() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         cart_recycler_view.setLayoutManager(layoutManager);
@@ -94,33 +104,37 @@ public class AddToCartActivity extends AppCompatActivity {
         cartModelList.add(new CartModel(R.drawable.helicopter, "Mercedes G Class", "Qty : 1"));
         cartModelList.add(new CartModel(R.drawable.helicopter, "Mercedes G Class", "Qty : 1"));
 
-
         CartAdapter adapter = new CartAdapter(getApplicationContext(),
                 cartModelList);
         cart_recycler_view.setAdapter(adapter);
-        showCartWindow();
+        cart_recycler_view.setHasFixedSize(true);
     }
 
     private void showCartWindow() {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
 
+        if (cartModelList.isEmpty()) {
+            haveCart.setVisibility(View.VISIBLE);
+        } else {
+            haveCart.setVisibility(View.GONE);
+            cart_recycler_view.setVisibility(View.VISIBLE);
+        }
         Button continueShopping = customView.findViewById(R.id.continue_shopping);
         Button viewYourCart = customView.findViewById(R.id.view_cart);
 
         continueShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AddToCartActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddToCartActivity.class));
             }
         });
         viewYourCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AddedCartActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddedCartActivity.class));
                 finish();
             }
         });
+
         popupWindow = new PopupWindow(
                 customView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -144,7 +158,7 @@ public class AddToCartActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         });
-        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 150);
+        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 130);
     }
 
     @Override
@@ -175,7 +189,7 @@ public class AddToCartActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    
+
     private void mayAlsoLike() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
