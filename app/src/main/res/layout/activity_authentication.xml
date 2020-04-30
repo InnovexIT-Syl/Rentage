@@ -25,115 +25,123 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="#fff"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Login"
-                            android:textColor="#2B2929"
-                            android:textSize="20dp" />
+                        android:gravity="center"
+                        android:text="Login"
+                        android:textColor="#2B2929"
+                        android:textSize="20dp" />
 
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/email"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:drawableLeft="@drawable/ic_email_black_24dp"
-                                android:hint="Email"
-                                android:inputType="textEmailAddress"
-                                android:paddingLeft="10dp"
-                                android:textSize="20dp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- input password-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/passwordTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:passwordToggleEnabled="true">
-
-                            <EditText
-                                android:id="@+id/passwordText"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:drawableStart="@drawable/ic_vpn_key_black_24dp"
-                                android:hint="Password"
-                                android:inputType="textPassword"
-                                android:paddingLeft="10dp"
-                                android:textSize="20dp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Button
-                            android:id="@+id/logInButton"
+                        <EditText
+                            android:id="@+id/email"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/subscribe_button_style"
-                            android:focusable="true"
-                            android:padding="5dp"
-                            android:text="Login"
-                            android:textColor="#fff"
+                            android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableLeft="@drawable/ic_email_black_24dp"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:paddingLeft="10dp"
                             android:textSize="20dp" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Do not have account? Sign up bellow.."
-                            android:textColor="#807C7C"
-                            android:textSize="15dp" />
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
+                    <!-- input password-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordTextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="#fff"
-                        android:orientation="vertical"
-                        android:padding="5dp">
+                        app:passwordToggleEnabled="true">
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/passwordText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Sign Up"
-                            android:textColor="#2B2929"
+                            android:layout_height="45dp"
+                            android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:paddingLeft="10dp"
                             android:textSize="20dp" />
 
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                            <EditText
-                                android:layout_marginTop="10dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginEnd="2dp"
-                                android:layout_weight=".4"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:hint="Name"
-                                android:inputType="text"
-                                android:paddingLeft="10dp"
-                                android:textSize="20dp" />
+                    <Button
+                        android:id="@+id/logInButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/subscribe_button_style"
+                        android:focusable="true"
+                        android:padding="5dp"
+                        android:text="Login"
+                        android:textColor="#fff"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Do not have account? Sign up bellow.."
+                        android:textColor="#807C7C"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Sign Up"
+                        android:textColor="#2B2929"
+                        android:textSize="20dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="2dp"
+                            android:layout_weight=".4"
+                            android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableLeft="@drawable/ic_person_black_24dp"
+                            android:hint="Name"
+                            android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:textSize="20dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:id="@+id/register_email"
@@ -141,81 +149,87 @@
                             android:layout_height="45dp"
                             android:layout_marginTop="9dp"
                             android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableLeft="@drawable/ic_email_black_24dp"
                             android:hint="Email"
                             android:inputType="textEmailAddress"
                             android:paddingLeft="10dp"
                             android:textSize="20dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:passwordToggleEnabled="true">
 
-                            <EditText
-                                android:id="@+id/register_password"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:hint="Password"
-                                android:inputType="textPassword"
-                                android:paddingLeft="10dp"
-                                android:textSize="20dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:passwordToggleEnabled="true">
 
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:passwordToggleEnabled="true">
-
-                            <EditText
-                                android:id="@+id/register_confirm_password"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:hint="Confirm password"
-                                android:inputType="textPassword"
-                                android:paddingLeft="10dp"
-                                android:textSize="20dp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <TextView
-                            android:id="@+id/chooseProfilePicture"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/subscribe_edit_text_style"
-                            android:focusable="true"
-                            android:padding="8dp"
-                            android:drawableLeft="@drawable/ic_image_black_24dp"
-                            android:textAllCaps="false"
-                            android:text="Choose a profile picture"
-                            android:textColor="#535151"
-                            android:textSize="20dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"/>
-                        <ImageView
-                            android:layout_marginTop="9dp"
-                            android:id="@+id/profile_image"
-                            android:scaleType="centerCrop"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxHeight="200dp"
-                            android:contentDescription="TODO" />
-
-                        <Button
-                            android:id="@+id/byeItNowButton"
+                        <EditText
+                            android:id="@+id/register_password"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
-                            android:layout_marginTop="17dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/subscribe_button_style"
-                            android:focusable="true"
-                            android:padding="5dp"
-                            android:text="Sign in"
-                            android:textColor="#fff"
+                            android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:paddingLeft="10dp"
                             android:textSize="20dp" />
-                    </LinearLayout>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:passwordToggleEnabled="true">
+
+                        <EditText
+                            android:id="@+id/register_confirm_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/subscribe_edit_text_style"
+                            android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+                            android:hint="Confirm password"
+                            android:inputType="textPassword"
+                            android:paddingLeft="10dp"
+                            android:textSize="20dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/chooseProfilePicture"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/subscribe_edit_text_style"
+                        android:drawableLeft="@drawable/ic_image_black_24dp"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:text="Choose a profile picture"
+                        android:textAllCaps="false"
+                        android:textColor="#535151"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:contentDescription="TODO"
+                        android:maxHeight="200dp"
+                        android:scaleType="centerCrop" />
+
+                    <Button
+                        android:id="@+id/byeItNowButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/subscribe_button_style"
+                        android:focusable="true"
+                        android:padding="5dp"
+                        android:text="Sign in"
+                        android:textColor="#fff"
+                        android:textSize="20dp" />
                 </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
