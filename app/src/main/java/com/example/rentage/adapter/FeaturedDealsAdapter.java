@@ -16,7 +16,6 @@ import com.example.rentage.AddToCartActivity;
 import com.example.rentage.R;
 import com.example.rentage.model.FeaturedDealsModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdapter.FeaturedDealsHolder> {
