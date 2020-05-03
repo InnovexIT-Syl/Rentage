@@ -22,7 +22,6 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +42,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 
 public class ProfileActivity extends AppCompatActivity {
     Uri image_uri = null;
@@ -54,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ImageView profileImage, previousProfileImage;
     private TextView chooseProfileImage, haveProfileImage;
-    private EditText update_name;
+    private TextView update_name;
     private Button updateButton;
 
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -126,7 +127,8 @@ public class ProfileActivity extends AppCompatActivity {
         chooseProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageImportDialog();
+
+                checkPermissionGranted();
             }
         });
 
@@ -170,54 +172,60 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void showImageImportDialog() {
-        //items to display in delay
-        String[] items = {"Camera", "Gallery"};
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
-        //set title
-        dialog.setTitle("Select Image");
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    //camera option clicked
-                    if (!checkCameraPermission()) {
-                        //camera permission not allowed
-                        requestCameraPermission();
-                    } else {
-                        //permission allowed,take picture
-                        pickCamera();
-                    }
-                }
-                if (which == 1) {
-                    //gallery option clicked
-                    if (!checkStoragePermission()) {
-                        //Storage permission not allowed
-                        requestStoragePermission();
-                    } else {
-                        //permission allowed,take picture
-                        pickGallery();
-                    }
-                }
-            }
-        });
-        dialog.create().show(); //show dialog
+    private void checkPermissionGranted() {
+        if (!checkStoragePermission()) {
+            //Storage permission not allowed
+            requestStoragePermission();
+        } else {
+            //permission allowed,take picture
+            pickGallery();
+        }
     }
 
-    private void pickCamera() {
+//    private void showImageImportDialog() {
+//        //items to display in delay
+//        String[] items = {"Camera", "Gallery"};
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//
+//        //set title
+//        dialog.setTitle("Select Image");
+//        dialog.setItems(items, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (which == 0) {
+//                    //camera option clicked
+//                    if (!checkCameraPermission()) {
+//                        //camera permission not allowed
+//                        requestCameraPermission();
+//                    } else {
+//                        //permission allowed,take picture
+//                        pickCamera();
+//                    }
+//                }
+//                if (which == 1) {
+//                    //gallery option clicked
+//
+//                }
+//            }
+//        });
+//        dialog.create().show(); //show dialog
+//    }
+//
+//
 
-        //intent to take image from camera,it will also be save to storage to get high image
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New picture");//title of the picture
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Image demo description");
-
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
-    }
+//    private void pickCamera() {
+//
+//        //intent to take image from camera,it will also be save to storage to get high image
+//        ContentValues values = new ContentValues();
+//        values.put(MediaStore.Images.Media.TITLE, "New picture");//title of the picture
+//        values.put(MediaStore.Images.Media.DESCRIPTION, "Image demo description");
+//
+//        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+//        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
+//    }
 
     private void pickGallery() {
         //intent to pick image from gallery
@@ -238,38 +246,38 @@ public class ProfileActivity extends AppCompatActivity {
         return result;
     }
 
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
-    }
+//    private void requestCameraPermission() {
+//        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
+//    }
 
-    private boolean checkCameraPermission() {
-        // Check camera permission and return the result
-        boolean result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-
-        boolean result_1 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result && result_1;
-    }
+//    private boolean checkCameraPermission() {
+//        // Check camera permission and return the result
+//        boolean result = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+//
+//        boolean result_1 = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+//        return result && result_1;
+//    }
 
     //Handle Permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case CAMERA_REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    boolean cameraAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-
-                    if (cameraAccepted && writeStorageAccepted) {
-                        pickCamera();
-                    } else {
-                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
+//            case CAMERA_REQUEST_CODE:
+//                if (grantResults.length > 0) {
+//                    boolean cameraAccepted = grantResults[0] ==
+//                            PackageManager.PERMISSION_GRANTED;
+//                    boolean writeStorageAccepted = grantResults[0] ==
+//                            PackageManager.PERMISSION_GRANTED;
+//
+//                    if (cameraAccepted && writeStorageAccepted) {
+//                        pickCamera();
+//                    } else {
+//                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                break;
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0) {
                     boolean writeStorageAccepted = grantResults[0] ==
@@ -294,13 +302,14 @@ public class ProfileActivity extends AppCompatActivity {
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 image_uri = data.getData();
                 profileImage.setImageURI(image_uri);
+                profileImage.setVisibility(View.VISIBLE);
                 profileImage.invalidate();
             }
-            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-                image_uri = data.getData();
-                profileImage.setImageURI(image_uri);
-                profileImage.invalidate();
-            }
+//            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+//                image_uri = data.getData();
+//                profileImage.setImageURI(image_uri);
+//                profileImage.invalidate();
+//            }
         }
     }
 
@@ -313,30 +322,65 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void saveData() {
         progressDialog.setMessage("Updating profile..");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
         StorageReference reference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(image_uri));
 
-        reference.putFile(image_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful()) ;
-                        Uri downloadUri = uriTask.getResult();
+        if (image_uri != null) {
+            reference.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) ;
+                            Uri downloadUri = uriTask.getResult();
 
-                        //getting image url
-                        progressDialog.dismiss();
-                        Toast.makeText(ProfileActivity.this, "Profile updated successfully..", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        Toast.makeText(ProfileActivity.this, "" + exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            //getting image url
+                            progressDialog.dismiss();
+
+
+                            HashMap<String, Object> results = new HashMap<>();
+
+
+                            assert downloadUri != null;
+                            results.put("name", update_name.getText().toString());
+                            results.put("profile_image", downloadUri.toString());
+
+                            databaseReference.child(firebaseUser.getUid()).updateChildren(results)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            // url in database of user is added successfully
+                                            // dismiss progress bar
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getApplicationContext(), "Image Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    // error adding url in database of user
+                                    // dismiss progress bar
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            Toast.makeText(ProfileActivity.this, "Profile updated successfully..", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(ProfileActivity.this, "" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
     }
 
     private void checkUserStatus() {
