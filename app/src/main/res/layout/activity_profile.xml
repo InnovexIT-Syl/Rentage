@@ -79,7 +79,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/subscribe_edit_text_style"
-                android:drawableLeft="@drawable/ic_image_black_24dp"
+                android:drawableStart="@drawable/ic_image_black_24dp"
                 android:focusable="true"
                 android:padding="8dp"
                 android:text="Choose a new profile picture"
@@ -90,10 +90,10 @@
             <ImageView
                 android:id="@+id/profile_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginTop="9dp"
                 android:contentDescription="TODO"
-                android:maxHeight="100dp" />
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/update"

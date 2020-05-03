@@ -294,6 +294,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 image_uri = data.getData();
                 profileImage.setImageURI(image_uri);
+                profileImage.setVisibility(View.VISIBLE);
                 profileImage.invalidate();
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE) {
@@ -313,7 +314,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void saveData() {
         progressDialog.setMessage("Updating profile..");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
         StorageReference reference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(image_uri));
 
         reference.putFile(image_uri)
