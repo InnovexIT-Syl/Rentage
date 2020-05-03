@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
         haveProfileImage = findViewById(R.id.haveProfileImage);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering User...");
+
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
