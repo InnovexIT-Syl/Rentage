@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,20 +43,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ProfileActivity extends AppCompatActivity {
-    Uri image_uri;
+    Uri image_uri = null;
     String cameraPermission[];
     String storagePermission[];
     String storagePath = "user_profile_image";
     private static final String TAG = "";
     private Toolbar toolbarLogSign;
 
-    private ImageView profileImage,previousProfileImage;
-    private TextView chooseProfileImage;
+    private ImageView profileImage, previousProfileImage;
+    private TextView chooseProfileImage, haveProfileImage;
     private EditText update_name;
     private Button updateButton;
 
@@ -71,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     // storage
     private StorageReference storageReference;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +94,20 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("Login / Sign up");
+        getSupportActionBar().setTitle("Update profile");
         profileImage = findViewById(R.id.profile_image);
         update_name = findViewById(R.id.update_name);
         previousProfileImage = findViewById(R.id.previous_profile_image);
         chooseProfileImage = findViewById(R.id.chooseProfilePicture);
         updateButton = findViewById(R.id.update);
+        haveProfileImage = findViewById(R.id.haveProfileImage);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registering User...");
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageUpload();
+                saveData();
             }
         });
 
@@ -126,6 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        checkUserStatus();
         if (uid != null) {
 
             // databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
@@ -151,9 +156,9 @@ public class ProfileActivity extends AppCompatActivity {
                             Picasso.get().load(profileImage).into(previousProfileImage);
                         } catch (Exception e) {
                             // if there is any exception while setting image then set default
-                            Picasso.get().load(R.drawable.index).into(previousProfileImage);
+//                            Picasso.get().load(R.drawable.index).into(previousProfileImage);
+                            haveProfileImage.setVisibility(View.VISIBLE);
                         }
-
                     }
                 }
 
@@ -299,28 +304,44 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void imageUpload(){
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+    //get image extension
+    public String getFileExtension(Uri imageUrl) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(imageUrl));
+    }
 
-        String filePathAndName = storagePath + "_" + user.getUid();
-        StorageReference storageReference2nd = storageReference.child(filePathAndName);
-        storageReference2nd.putFile(image_uri)
+    private void saveData() {
+        progressDialog.setMessage("Updating profile..");
+        progressDialog.show();
+        StorageReference reference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(image_uri));
+
+        reference.putFile(image_uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isSuccessful()) ;
-                        Uri downloadURI = uriTask.getResult();
-                        // check if image is uploaded or not and uri is received
-                        if (uriTask.isSuccessful()) {
+                        Uri downloadUri = uriTask.getResult();
 
-                        }
+                        //getting image url
+                        progressDialog.dismiss();
+                        Toast.makeText(ProfileActivity.this, "Profile updated successfully..", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ProfileActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Toast.makeText(ProfileActivity.this, "" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkUserStatus() {
+        if (firebaseUser != null) {
+            uid = firebaseUser.getUid();
+        }
     }
 }
