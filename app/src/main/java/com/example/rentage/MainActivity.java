@@ -16,9 +16,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,9 +49,22 @@ import com.glide.slider.library.slidertypes.TextSliderView;
 import com.glide.slider.library.tricks.ViewPagerEx;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener {
@@ -63,6 +79,15 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     private View content;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
+    private String uid = null;
+
+    // firebase
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    // storage
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +103,22 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         viewPager = findViewById(R.id.tab_viewpager);
         relativeLayout = findViewById(R.id.relative_layout);
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+
         setSupportActionBar(toolbarHome);
         toolbarHome.setTitleTextColor(Color.WHITE);
 //        toolbarHome.setTitle("Home");
         getSupportActionBar().setTitle("Home");
         slider = findViewById(R.id.slider);
+
+
+        // init firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        storageReference = FirebaseStorage.getInstance().getReference(); // firebase storage reference
 
         final ActionBar actionBar = getSupportActionBar();
 
@@ -103,7 +139,64 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         drawerToggle = setupDrawerToggle();
 
         slider();
+        checkUserStatus();
+
+        if (uid != null) {
+
+            final TextView userName = navigationView.getHeaderView(0).findViewById(R.id.username);
+            final TextView userEmail = navigationView.getHeaderView(0).findViewById(R.id.userEmail);
+            final CircleImageView userProfileImage = navigationView.getHeaderView(0).findViewById(R.id.profileImage);
+
+
+            ImageButton editButton = navigationView.getHeaderView(0).findViewById(R.id.edit_Button);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                }
+            });
+            // databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+
+            Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // checks until required data got
+                    for (DataSnapshot data_snapshot : dataSnapshot.getChildren()) {
+
+                        // get data
+                        String name = data_snapshot.child("name").getValue().toString();
+                        String email = data_snapshot.child("email").getValue().toString();
+                        String profileImage = data_snapshot.child("profile_image").getValue().toString();
+
+                        // set data
+                        userName.setText(name);
+                        userEmail.setText(email);
+
+
+                        // for profile photo
+                        try {
+                            // if image is received then set
+                            Picasso.get().load(profileImage).into(userProfileImage);
+                        } catch (Exception e) {
+                            // if there is any exception while setting image then set default
+                            Picasso.get().load(R.drawable.index).into(userProfileImage);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
     }
+
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, drawerLayout, toolbarHome, R.string.drawer_open, R.string.drawer_close);
@@ -124,8 +217,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     }
 
     private void setupDrawerLayout() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigation_view);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -140,6 +232,12 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                         break;
                     case R.id.about:
                         startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+                        finish();
+                        break;
+                    case R.id.logout:
+                        firebaseAuth.signOut();
+                        Toast.makeText(MainActivity.this, "You are logout successfully.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                         break;
                 }
@@ -339,6 +437,17 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private void checkUserStatus() {
+        // get current user
+
+        if (firebaseUser != null) {
+            // user is signed in stay here
+            // set email of logged in user
+            // emailText.setText(user.getEmail());
+            uid = firebaseUser.getUid();
+        }
     }
 
 }

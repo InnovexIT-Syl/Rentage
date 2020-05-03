@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,29 +17,48 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class AuthenticationActivity extends AppCompatActivity {
+import java.util.HashMap;
 
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
+
+public class AuthenticationActivity extends AppCompatActivity {
+    private static final String TAG = "";
     private Toolbar toolbarLogSign;
 
-    private ImageView profileImage;
-    private TextView chooseProfileImage;
-    private static final int CAMERA_REQUEST_CODE = 200;
-    private static final int STORAGE_REQUEST_CODE = 400;
-    private static final int IMAGE_PICK_GALLERY_CODE = 1000;
-    private static final int IMAGE_PICK_CAMERA_CODE = 1001;
+    private EditText register_name, register_email, register_password, register_confirmPassword;
+    private Button register_button;
+    ProgressDialog progressDialog;
+    // declare firebase auth
+    private FirebaseAuth firebaseAuth;
+    // storage
+    private StorageReference storageReference;
 
-    String cameraPermission[];
-    String storagePermission[];
-    Uri image_uri;
+    private EditText loginEmail,loginPassword;
+    private Button loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +69,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     private void initialize() {
 
         toolbarLogSign = findViewById(R.id.login_sign_in_toolbar);
-        profileImage = findViewById(R.id.profile_image);
-        chooseProfileImage = findViewById(R.id.chooseProfilePicture);
 
         setSupportActionBar(toolbarLogSign);
         toolbarLogSign.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -64,155 +82,157 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Login / Sign up");
 
-        //camera permission
-        cameraPermission = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        //storage permission
-        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        register_name = findViewById(R.id.register_name);
+        register_email = findViewById(R.id.register_email);
+        register_password = findViewById(R.id.register_password);
+        register_confirmPassword = findViewById(R.id.register_confirm_password);
+        register_button = findViewById(R.id.register_button);
 
-        chooseProfileImage.setOnClickListener(new View.OnClickListener() {
+        loginEmail = findViewById(R.id.login_email);
+        loginPassword = findViewById(R.id.login_password);
+        loginButton  = findViewById(R.id.logInButton);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registering User...");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        register_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageImportDialog();
+                // get input value
+                String name = register_name.getText().toString().trim();
+                String email = register_email.getText().toString().trim();
+                String password = register_password.getText().toString().trim();
+                String confirm_password = register_confirmPassword.getText().toString().trim();
+
+                // validate
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    // set error and focus to email edit text
+                    register_email.setError("Invalid Email");
+                    register_email.setFocusable(true);
+                } else if (password.length() < 6) {
+                    register_password.setError("Password length at least 6 characters or password does not match");
+                    register_password.setFocusable(true);
+                } else if (!password.equals(confirm_password)) {
+                    register_confirmPassword.setError("Password does not match");
+                    register_confirmPassword.setFocusable(true);
+                } else {
+                    registerUser(email, password, name);
+                }
             }
         });
-    }
 
-    private void showImageImportDialog() {
-        //items to display in delay
-        String[] items = {"Camera","Gallery"};
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
-        //set title
-        dialog.setTitle("Select Image");
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(which ==0){
-                    //camera option clicked
-                    if(!checkCameraPermission()){
-                        //camera permission not allowed
-                        requestCameraPermission();
-                    }
-                    else {
-                        //permission allowed,take picture
-                        pickCamera();
-                    }
-                }
-                if (which == 1){
-                    //gallery option clicked
-                    if(!checkStoragePermission()){
-                        //Storage permission not allowed
-                        requestStoragePermission();
-                    }
-                    else {
-                        //permission allowed,take picture
-                        pickGallery();
-                    }
-                }
+            public void onClick(View v) {
+                String email = loginEmail.getText().toString().trim();
+                String password = loginPassword.getText().toString().trim();
+                loginUser(email,password);
             }
         });
-        dialog.create().show(); //show dialog
     }
 
-    private void pickCamera() {
 
-        //intent to take image from camera,it will also be save to storage to get high image
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE,"New picture");//title of the picture
-        values.put(MediaStore.Images.Media.DESCRIPTION,"Image demo description");
-
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
-        startActivityForResult(cameraIntent,IMAGE_PICK_CAMERA_CODE);
-    }
-
-    private void pickGallery() {
-        //intent to pick image from gallery
-        Intent intent = new Intent(Intent.ACTION_PICK);
-
-        //set intent type to image
-        intent.setType("image/*");
-        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this,storagePermission,STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkStoragePermission() {
-        boolean result =  ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this,cameraPermission,CAMERA_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermission(){
-        // Check camera permission and return the result
-        boolean result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-
-        boolean result_1 =  ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result && result_1;
-    }
-
-    //Handle Permission result
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case CAMERA_REQUEST_CODE:
-                if(grantResults.length > 0){
-                    boolean cameraAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-
-                    if(cameraAccepted && writeStorageAccepted){
-                        pickCamera();
-                    }
-                    else {
-                        Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-            case STORAGE_REQUEST_CODE:
-                if(grantResults.length > 0){
-                    boolean writeStorageAccepted = grantResults[0] ==
-                            PackageManager.PERMISSION_GRANTED;
-                    if(writeStorageAccepted){
-                        pickGallery();
-                    }
-                    else {
-                        Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-        }
-    }
-    //Handle Image result
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
-                image_uri = data.getData();
-                profileImage.setImageURI(image_uri);
-                profileImage.invalidate();
-            }
-            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-                image_uri = data.getData();
-                profileImage.setImageURI(image_uri);
-                profileImage.invalidate();
-            }
-        }
-
+    public boolean onSupportNavigateUp() {
+        onBackPressed(); //  go previous activity
+        return super.onSupportNavigateUp();
     }
 
+
+    private void loginUser(String email, String password) {
+        // show progress dialog
+        progressDialog.setMessage("Logging in...");
+        progressDialog.show();
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // dismiss progress dialog
+                            progressDialog.dismiss();
+
+                            // Sign in success, update UI with the signed-in user'AdapterPosts information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            Toast.makeText(AuthenticationActivity.this, "You are now login..", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // dismiss progress dialog
+                            progressDialog.dismiss();
+
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // dismiss progress dialog
+                progressDialog.dismiss();
+                // error, get and show error message
+                Toast.makeText(AuthenticationActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void registerUser(String email, String password, final String name) {
+        progressDialog.show();
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            progressDialog.dismiss();
+                            // Sign in success, dismiss dialog and start register activity
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                            // get user email and uid from auth
+                            assert user != null;
+                            final String email = user.getEmail();
+                            final String uid = user.getUid();
+
+                            HashMap<Object, String> hashMap = new HashMap<>();
+
+                            // put data into hash map
+                            hashMap.put("email", email);
+                            hashMap.put("uid", uid);
+                            hashMap.put("name", name);
+                            hashMap.put("profile_image","");
+
+                            // firebase database instance
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                            // path to store user data named "Users"
+                            DatabaseReference databaseReference = database.getReference("Users");
+
+                            // put data within hash map in database
+                            databaseReference.child(uid).setValue(hashMap);
+                            Toast.makeText(AuthenticationActivity.this, "Registration successfully finished. Now you can login.", Toast.LENGTH_SHORT).show();
+                            register_name.setText("");
+                            register_email.setText("");
+                            register_password.setText("");
+                            register_confirmPassword.setText("");
+
+                        } else {
+                            progressDialog.dismiss();
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+
+                            Toast.makeText(AuthenticationActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // error , dismiss progress dialog and get and show the error message.
+                progressDialog.dismiss();
+                Toast.makeText(AuthenticationActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

@@ -11,7 +11,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="170dp"
             android:layout_margin="1dp"
             android:background="@drawable/nav_header_style"
             android:orientation="vertical">
@@ -40,33 +40,68 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
             android:layout_gravity="bottom"
+            android:layout_marginTop="100dp"
             android:orientation="vertical"
             android:padding="3dp">
 
-            <ImageView
-                android:layout_width="250dp"
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profileImage"
+                android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:contentDescription="TODO"
-                android:src="@drawable/index" />
+                android:src="@drawable/index"
+                app:civ_border_color="#504E4E"
+                app:civ_border_width="2dp" />
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Customer Name"
-                android:textColor="#252424"
-                android:textSize="20dp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="example@mailserver.domain"
-                android:textColor="#555252"
-                android:textSize="17dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Customer Name"
+                        android:textColor="#252424"
+                        android:textSize="20dp" />
+
+
+                    <TextView
+                        android:id="@+id/userEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="example@mailserver.domain"
+                        android:textColor="#555252"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/edit_Button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight=".1"
+                        android:background="#FBFAFA"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_edit_black_24dp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/email"
+                            android:id="@+id/login_email"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:background="@drawable/subscribe_edit_text_style"
@@ -72,7 +72,7 @@
                         app:passwordToggleEnabled="true">
 
                         <EditText
-                            android:id="@+id/passwordText"
+                            android:id="@+id/login_password"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:background="@drawable/subscribe_edit_text_style"
@@ -125,6 +125,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
+                            android:id="@+id/register_name"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginTop="10dp"
@@ -193,31 +194,9 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/chooseProfilePicture"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/subscribe_edit_text_style"
-                        android:drawableLeft="@drawable/ic_image_black_24dp"
-                        android:focusable="true"
-                        android:padding="8dp"
-                        android:text="Choose a profile picture"
-                        android:textAllCaps="false"
-                        android:textColor="#535151"
-                        android:textSize="20dp" />
-
-                    <ImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="9dp"
-                        android:contentDescription="TODO"
-                        android:maxHeight="200dp"
-                        android:scaleType="centerCrop" />
 
                     <Button
-                        android:id="@+id/byeItNowButton"
+                        android:id="@+id/register_button"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="17dp"
