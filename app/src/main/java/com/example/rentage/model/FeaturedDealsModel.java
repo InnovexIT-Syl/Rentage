@@ -1,37 +1,51 @@
 package com.example.rentage.model;
 
 public class FeaturedDealsModel {
-    private int featuredImage;
-    private String featuredName;
-    private double featuredPrice;
+    private String imageUrl;
+    private String title;
+    private String price;
+    private String id;
 
-    public FeaturedDealsModel(int featuredImage, String featuredName, double featuredPrice) {
-        this.featuredImage = featuredImage;
-        this.featuredName = featuredName;
-        this.featuredPrice = featuredPrice;
+    public FeaturedDealsModel(){
+
     }
 
-    public int getFeaturedImage() {
-        return featuredImage;
+    public FeaturedDealsModel(String imageUrl, String title, String price, String id) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.price = price;
+        this.id = id;
     }
 
-    public void setFeaturedImage(int featuredImage) {
-        this.featuredImage = featuredImage;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public String getFeaturedName() {
-        return featuredName;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public void setFeaturedName(String featuredName) {
-        this.featuredName = featuredName;
+    public String getTitle() {
+        return title;
     }
 
-    public double getFeaturedPrice() {
-        return featuredPrice;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setFeaturedPrice(double featuredPrice) {
-        this.featuredPrice = featuredPrice;
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -194,17 +194,17 @@ public class AddToCartActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
 
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-
-        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(this,
-                featuredDealsModelList);
-        featuredDealsRecyclerview.setAdapter(adapter);
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//
+//        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(this,
+//                featuredDealsModelList);
+//        featuredDealsRecyclerview.setAdapter(adapter);
     }
 }

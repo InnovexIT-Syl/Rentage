@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentage.AddToCartActivity;
 import com.example.rentage.R;
 import com.example.rentage.model.FeaturedDealsModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -41,9 +42,15 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FeaturedDealsHolder holder, int position) {
-        holder.featuredImage.setImageResource(featuredDealsList.get(position).getFeaturedImage());
-        holder.featuredName.setText(featuredDealsList.get(position).getFeaturedName());
-        holder.featuredCost.setText("AED " + featuredDealsList.get(position).getFeaturedPrice());
+        // set user image
+        try {
+            Picasso.get().load(featuredDealsList.get(position).getImageUrl()).placeholder(R.drawable.helicopter).into(holder.featuredImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        holder.featuredName.setText(featuredDealsList.get(position).getTitle());
+        holder.featuredCost.setText("AED " + featuredDealsList.get(position).getPrice());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

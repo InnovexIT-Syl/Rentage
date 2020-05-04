@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void bookingDeals() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Services");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Categories");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

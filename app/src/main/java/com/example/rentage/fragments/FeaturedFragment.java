@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentage.R;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.example.rentage.model.FeaturedDealsModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,25 +48,24 @@ public class FeaturedFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
 
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Services");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    FeaturedDealsModel featuredDealsModel = ds.getValue(FeaturedDealsModel.class);
+                    featuredDealsModelList.add(featuredDealsModel);
+                }
 
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
+                FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getContext(), featuredDealsModelList);
+                featuredDealsRecyclerview.setAdapter(adapter);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getContext(),
                 featuredDealsModelList);
         featuredDealsRecyclerview.setAdapter(adapter);

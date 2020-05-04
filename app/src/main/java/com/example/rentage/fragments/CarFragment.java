@@ -2,6 +2,7 @@ package com.example.rentage.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.rentage.R;
+import com.example.rentage.adapter.BookingModelAdapter;
+import com.example.rentage.adapter.CartAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
+import com.example.rentage.model.BookingModel;
 import com.example.rentage.model.FeaturedDealsModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,26 +104,26 @@ public class CarFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         carRecyclerview.setLayoutManager(gridLayoutManager);
 
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Services");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    FeaturedDealsModel featuredDealsModel = ds.getValue(FeaturedDealsModel.class);
+                    featuredDealsModelList.add(featuredDealsModel);
+                }
 
+                FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getContext(), featuredDealsModelList);
+                carRecyclerview.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getActivity(),
                 featuredDealsModelList);
         carRecyclerview.setAdapter(adapter);
     }
-
 }

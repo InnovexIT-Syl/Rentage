@@ -92,26 +92,26 @@ public class HelicopterFragment extends Fragment {
     private void loadHelicopter() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         helicopterRecyclerview.setLayoutManager(gridLayoutManager);
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-                "Class", 3150.00));
-
-        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getActivity(),
-                featuredDealsModelList);
-        helicopterRecyclerview.setAdapter(adapter);
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
+//                "Class", 3150.00));
+//
+//        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(getActivity(),
+//                featuredDealsModelList);
+//        helicopterRecyclerview.setAdapter(adapter);
     }
 
 }
