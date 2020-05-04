@@ -182,50 +182,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-//    private void showImageImportDialog() {
-//        //items to display in delay
-//        String[] items = {"Camera", "Gallery"};
-//        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//
-//        //set title
-//        dialog.setTitle("Select Image");
-//        dialog.setItems(items, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (which == 0) {
-//                    //camera option clicked
-//                    if (!checkCameraPermission()) {
-//                        //camera permission not allowed
-//                        requestCameraPermission();
-//                    } else {
-//                        //permission allowed,take picture
-//                        pickCamera();
-//                    }
-//                }
-//                if (which == 1) {
-//                    //gallery option clicked
-//
-//                }
-//            }
-//        });
-//        dialog.create().show(); //show dialog
-//    }
-//
-//
-
-//    private void pickCamera() {
-//
-//        //intent to take image from camera,it will also be save to storage to get high image
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.TITLE, "New picture");//title of the picture
-//        values.put(MediaStore.Images.Media.DESCRIPTION, "Image demo description");
-//
-//        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-//
-//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-//        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
-//    }
 
     private void pickGallery() {
         //intent to pick image from gallery
@@ -246,38 +202,11 @@ public class ProfileActivity extends AppCompatActivity {
         return result;
     }
 
-//    private void requestCameraPermission() {
-//        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
-//    }
-
-//    private boolean checkCameraPermission() {
-//        // Check camera permission and return the result
-//        boolean result = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-//
-//        boolean result_1 = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-//        return result && result_1;
-//    }
 
     //Handle Permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-//            case CAMERA_REQUEST_CODE:
-//                if (grantResults.length > 0) {
-//                    boolean cameraAccepted = grantResults[0] ==
-//                            PackageManager.PERMISSION_GRANTED;
-//                    boolean writeStorageAccepted = grantResults[0] ==
-//                            PackageManager.PERMISSION_GRANTED;
-//
-//                    if (cameraAccepted && writeStorageAccepted) {
-//                        pickCamera();
-//                    } else {
-//                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                break;
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0) {
                     boolean writeStorageAccepted = grantResults[0] ==
@@ -305,11 +234,6 @@ public class ProfileActivity extends AppCompatActivity {
                 profileImage.setVisibility(View.VISIBLE);
                 profileImage.invalidate();
             }
-//            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-//                image_uri = data.getData();
-//                profileImage.setImageURI(image_uri);
-//                profileImage.invalidate();
-//            }
         }
     }
 
