@@ -30,7 +30,6 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
 
     }
 
-
     @NonNull
     @Override
     public FeaturedDealsHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -42,7 +41,6 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final FeaturedDealsHolder holder, final int position) {
-        // set user image
         try {
             Picasso.get().load(featuredDealsList.get(position).getImageUrl()).placeholder(R.drawable.helicopter).into(holder.featuredImage);
         } catch (Exception e) {
