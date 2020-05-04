@@ -94,8 +94,6 @@ public class InfoCheckoutActivity extends AppCompatActivity {
         dbRef.setValue(infoCheckout).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Intent intent = new Intent(getApplicationContext(),
-                        InfoCheckoutActivity.class);
 
                 Toast.makeText(InfoCheckoutActivity.this, "Info checkout successfully uploaded",
                         Toast.LENGTH_SHORT).show();
