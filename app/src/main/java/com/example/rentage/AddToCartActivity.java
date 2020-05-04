@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -19,15 +20,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rentage.adapter.CartAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.example.rentage.model.CartModel;
 import com.example.rentage.model.FeaturedDealsModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +48,17 @@ public class AddToCartActivity extends AppCompatActivity {
     private Toolbar toolbarCart;
     private List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
     private List<CartModel> cartModelList = new ArrayList<>();
-    private RecyclerView featuredDealsRecyclerview, cart_recycler_view;
+    private RecyclerView cart_recycler_view;
     Button addToCartButton, byeItNow;
     private PopupWindow popupWindow;
     private LinearLayout linearLayout;
     private View customView;
     private TextView haveCart;
+    EditText quantity;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    ImageView add_to_cart_image;
+    TextView title, price, featured_description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +74,13 @@ public class AddToCartActivity extends AppCompatActivity {
         addToCartButton = findViewById(R.id.addToCartButton);
         byeItNow = findViewById(R.id.byeItNowButton);
         linearLayout = findViewById(R.id.linear_layout);
+        quantity = findViewById(R.id.quantity);
+
+        title = findViewById(R.id.add_to_cart_title);
+        price = findViewById(R.id.add_to_cart_price);
+        featured_description = findViewById(R.id.featured_description);
+
+        add_to_cart_image = findViewById(R.id.add_cart_image);
 
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -70,12 +93,14 @@ public class AddToCartActivity extends AppCompatActivity {
         });
 
         getSupportActionBar().setTitle("Add on your cart");
-        featuredDealsRecyclerview = findViewById(R.id.may_like_recyclerview);
+
+        showSelectedFeatured();
         initCustomView();
+
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCart();
+                //addCart();
                 showCartWindow();
             }
         });
@@ -87,7 +112,44 @@ public class AddToCartActivity extends AppCompatActivity {
         });
 
         // cart_recycler_view = findViewById(R.id.cart_recycler_view);
-        mayAlsoLike();
+    }
+
+    private void showSelectedFeatured() {
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("ID");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Services");
+
+        Query query = databaseReference.orderByChild("id").equalTo(id);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    String p = ds.child("price").getValue().toString();
+                    String d = ds.child("description").getValue().toString();
+                    String t = ds.child("title").getValue().toString();
+                    String imageUrl = ds.child("imageUrl").getValue().toString();
+
+                    title.setText(t);
+                    featured_description.setText(d);
+                    price.setText("AED " + p);
+
+                    add_to_cart_image.setImageURI(Uri.parse(imageUrl));
+//                    try {
+//                        Picasso.get().load(imageUrl).into(add_to_cart_image);
+//                    } catch (Exception e) {
+//                        Toast.makeText(AddToCartActivity.this, "Image does not loaded successfully", Toast.LENGTH_SHORT).show();
+//                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initCustomView() {
@@ -100,9 +162,10 @@ public class AddToCartActivity extends AppCompatActivity {
     private void addCart() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         cart_recycler_view.setLayoutManager(layoutManager);
-        cartModelList.add(new CartModel(R.drawable.helicopter, "Mercedes G Class", "Qty : 1"));
-        cartModelList.add(new CartModel(R.drawable.helicopter, "Mercedes G Class", "Qty : 1"));
-        cartModelList.add(new CartModel(R.drawable.helicopter, "Mercedes G Class", "Qty : 1"));
+
+
+        cartModelList.add(new CartModel("Mercedes G Class", "image", "Qty : 1", "", "", ""));
+
 
         CartAdapter adapter = new CartAdapter(getApplicationContext(),
                 cartModelList);
@@ -112,53 +175,53 @@ public class AddToCartActivity extends AppCompatActivity {
 
     private void showCartWindow() {
 
-        if (cartModelList.isEmpty()) {
-            haveCart.setVisibility(View.VISIBLE);
-        } else {
-            haveCart.setVisibility(View.GONE);
-            cart_recycler_view.setVisibility(View.VISIBLE);
-        }
-        Button continueShopping = customView.findViewById(R.id.continue_shopping);
-        Button viewYourCart = customView.findViewById(R.id.view_cart);
-
-        continueShopping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), AddToCartActivity.class));
-            }
-        });
-        viewYourCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), AddedCartActivity.class));
-                finish();
-            }
-        });
-
-        popupWindow = new PopupWindow(
-                customView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-
-        popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
-
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (Build.VERSION.SDK_INT >= 21) {
-            popupWindow.setElevation(5.0f);
-        }
-
-        ImageButton closeButton = customView.findViewById(R.id.button_close);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        });
-        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 130);
+//        if (cartModelList.isEmpty()) {
+//            haveCart.setVisibility(View.VISIBLE);
+//        } else {
+//            haveCart.setVisibility(View.GONE);
+//            cart_recycler_view.setVisibility(View.VISIBLE);
+//        }
+//        Button continueShopping = customView.findViewById(R.id.continue_shopping);
+//        Button viewYourCart = customView.findViewById(R.id.view_cart);
+//
+//        continueShopping.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(), AddToCartActivity.class));
+//            }
+//        });
+//        viewYourCart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(), AddedCartActivity.class));
+//                finish();
+//            }
+//        });
+//
+//        popupWindow = new PopupWindow(
+//                customView,
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//        );
+//
+//        popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
+//
+//        popupWindow.setFocusable(true);
+//        popupWindow.setOutsideTouchable(true);
+//        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        popupWindow.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            popupWindow.setElevation(5.0f);
+//        }
+//
+//        ImageButton closeButton = customView.findViewById(R.id.button_close);
+//        closeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                popupWindow.dismiss();
+//            }
+//        });
+//        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 130);
     }
 
     @Override
@@ -190,21 +253,4 @@ public class AddToCartActivity extends AppCompatActivity {
         }
     }
 
-    private void mayAlsoLike() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        featuredDealsRecyclerview.setLayoutManager(gridLayoutManager);
-
-//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-//                "Class", 3150.00));
-//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.motor, "Mercedes G " +
-//                "Class", 3150.00));
-//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.yachts, "Mercedes G " +
-//                "Class", 3150.00));
-//        featuredDealsModelList.add(new FeaturedDealsModel(R.drawable.helicopter, "Mercedes G " +
-//                "Class", 3150.00));
-//
-//        FeaturedDealsAdapter adapter = new FeaturedDealsAdapter(this,
-//                featuredDealsModelList);
-//        featuredDealsRecyclerview.setAdapter(adapter);
-    }
 }

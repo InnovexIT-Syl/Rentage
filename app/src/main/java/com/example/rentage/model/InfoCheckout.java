@@ -4,17 +4,17 @@ public class InfoCheckout {
     String id;
     String name;
     String address;
-    String city;
-    String country;
+    String orderByEmail;
+    String orderByID;
     String postal_code;
     String email_or_mobile;
 
-    public InfoCheckout(String id, String name, String address, String city, String country, String postal_code, String email_or_mobile) {
+    public InfoCheckout(String id, String name, String address, String orderByEmail, String orderByID, String postal_code, String email_or_mobile) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.city = city;
-        this.country = country;
+        this.orderByEmail = orderByEmail;
+        this.orderByID = orderByID;
         this.postal_code = postal_code;
         this.email_or_mobile = email_or_mobile;
     }
@@ -43,20 +43,20 @@ public class InfoCheckout {
         this.address = address;
     }
 
-    public String getCity() {
-        return city;
+    public String getOrderByEmail() {
+        return orderByEmail;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setOrderByEmail(String orderByEmail) {
+        this.orderByEmail = orderByEmail;
     }
 
-    public String getCountry() {
-        return country;
+    public String getOrderByID() {
+        return orderByID;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setOrderByID(String orderByID) {
+        this.orderByID = orderByID;
     }
 
     public String getPostal_code() {

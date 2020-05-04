@@ -72,7 +72,7 @@ public class HelicopterFragment extends Fragment {
     }
 
     private void implementSpinnerSortBy() {
-        sortByArray = new String[]{"Price, low to high", "Price, high to low", "Alphabetically,A-Z", "Alphabetically,Z-A", "Featured", "Best selling", "Date,old to new", "Date,new to old"};
+        sortByArray = new String[]{"Price, low to high", "Price, high to low","Date,old to new", "Date,new to old"};
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.sample_view, R.id.sampleTextId, sortByArray);
         spinnerSortBy.setAdapter(adapter);
 

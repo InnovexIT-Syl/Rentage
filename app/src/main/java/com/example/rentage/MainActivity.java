@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                 }
             });
-            // databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
 
             Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
             query.addValueEventListener(new ValueEventListener() {
@@ -426,12 +425,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     }
 
     private void checkUserStatus() {
-        // get current user
-
         if (firebaseUser != null) {
-            // user is signed in stay here
-            // set email of logged in user
-            // emailText.setText(user.getEmail());
             uid = firebaseUser.getUid();
         }
     }

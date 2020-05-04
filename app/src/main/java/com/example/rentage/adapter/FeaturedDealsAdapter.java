@@ -41,7 +41,7 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull FeaturedDealsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FeaturedDealsHolder holder, final int position) {
         // set user image
         try {
             Picasso.get().load(featuredDealsList.get(position).getImageUrl()).placeholder(R.drawable.helicopter).into(holder.featuredImage);
@@ -56,7 +56,7 @@ public class FeaturedDealsAdapter extends RecyclerView.Adapter<FeaturedDealsAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, AddToCartActivity.class);
-                intent.putExtra("ID", "");
+                intent.putExtra("ID", featuredDealsList.get(position).getId());
                 context.startActivity(intent);
             }
         });

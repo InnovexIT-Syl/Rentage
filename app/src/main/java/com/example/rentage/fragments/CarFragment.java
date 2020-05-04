@@ -65,7 +65,7 @@ public class CarFragment extends Fragment {
 
     private void implementSpinnerFilter() {
 
-        filterArray = new String[]{"All products", "Cars", "Mercedes", "Ferrari", "Range Rover"};
+        filterArray = new String[]{"All products", "Mercedes", "Ferrari", "Range Rover"};
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.sample_view, R.id.sampleTextId, filterArray);
         spinnerFilter.setAdapter(adapter);
 
@@ -83,7 +83,7 @@ public class CarFragment extends Fragment {
     }
 
     private void implementSpinnerSortBy() {
-        sortByArray = new String[]{"Price, low to high","Price, high to low" ,"Alphabetically,A-Z","Alphabetically,Z-A","Featured", "Best selling", "Date,old to new", "Date,new to old"};
+        sortByArray = new String[]{"Price, low to high","Price, high to low", "Date,old to new", "Date,new to old"};
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.sample_view, R.id.sampleTextId, sortByArray);
         spinnerSortBy.setAdapter(adapter);
 

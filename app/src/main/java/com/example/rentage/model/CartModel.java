@@ -1,30 +1,36 @@
 package com.example.rentage.model;
 
 public class CartModel {
-    private int cartImage;
-    private String cartName;
-    private String cartQuantity;
+    String cartTitle;
+    String cartImage;
+    String cartQuantity;
+    String id;
+    String cartOrderByEmail;
+    String cartOrderById;
 
-    public CartModel(int cartImage, String cartName, String cartQuantity) {
+    public CartModel(String cartTitle, String cartImage, String cartQuantity, String id, String cartOrderByEmail, String cartOrderById) {
+        this.cartTitle = cartTitle;
         this.cartImage = cartImage;
-        this.cartName = cartName;
         this.cartQuantity = cartQuantity;
+        this.id = id;
+        this.cartOrderByEmail = cartOrderByEmail;
+        this.cartOrderById = cartOrderById;
     }
 
-    public int getCartImage() {
+    public String getCartTitle() {
+        return cartTitle;
+    }
+
+    public void setCartTitle(String cartTitle) {
+        this.cartTitle = cartTitle;
+    }
+
+    public String getCartImage() {
         return cartImage;
     }
 
-    public void setCartImage(int cartImage) {
+    public void setCartImage(String cartImage) {
         this.cartImage = cartImage;
-    }
-
-    public String getCartName() {
-        return cartName;
-    }
-
-    public void setCartName(String cartName) {
-        this.cartName = cartName;
     }
 
     public String getCartQuantity() {
@@ -33,5 +39,29 @@ public class CartModel {
 
     public void setCartQuantity(String cartQuantity) {
         this.cartQuantity = cartQuantity;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCartOrderByEmail() {
+        return cartOrderByEmail;
+    }
+
+    public void setCartOrderByEmail(String cartOrderByEmail) {
+        this.cartOrderByEmail = cartOrderByEmail;
+    }
+
+    public String getCartOrderById() {
+        return cartOrderById;
+    }
+
+    public void setCartOrderById(String cartOrderById) {
+        this.cartOrderById = cartOrderById;
     }
 }

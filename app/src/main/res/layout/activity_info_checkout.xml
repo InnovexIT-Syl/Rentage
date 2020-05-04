@@ -26,182 +26,102 @@
             android:orientation="vertical">
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="Contact information " />
+
+                <EditText
+                    android:id="@+id/email_or_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:background="@drawable/subscribe_edit_text_style"
+                    android:hint="Email or Mobile phone number"
+                    android:paddingLeft="10dp"
+                    android:textColor="#2B2B2C"
+                    android:textStyle="normal" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="Billing address" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Information > Payment" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:text="Contact information " />
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/email_or_mobile"
-                        android:layout_width="match_parent"
+                        android:id="@+id/first_name"
+                        android:layout_width="0dp"
                         android:layout_height="43dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight=".4"
                         android:background="@drawable/subscribe_edit_text_style"
-                        android:hint="Email or Mobile phone number"
-                        android:textStyle="normal"
-                        android:paddingLeft="10dp"
-                        android:textColor="#2B2B2C" />
-
-                    <CheckBox
-                        android:textColor="#4E4C4C"
-                        android:layout_marginTop="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Keep me up to date on news and exclusive offers " />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:text="Billing address" />
-
-                    <LinearLayout
-                        android:layout_marginTop="2dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/first_name"
-                            android:layout_width="0dp"
-                            android:layout_height="43dp"
-                            android:layout_marginEnd="2dp"
-                            android:layout_weight=".4"
-                            android:background="@drawable/subscribe_edit_text_style"
-                            android:hint="First name"
-                            android:inputType="text"
-                            android:paddingLeft="10dp"
-                            android:textColor="#2B2B2C"/>
-
-                        <EditText
-                            android:id="@+id/last_name"
-                            android:layout_width="0dp"
-                            android:layout_height="43dp"
-                            android:layout_marginStart="2dp"
-                            android:layout_weight=".4"
-                            android:background="@drawable/subscribe_edit_text_style"
-                            android:hint="Last name"
-                            android:inputType="text"
-                            android:paddingLeft="10dp"
-                            android:textColor="#2B2B2C" />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/address"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="7dp"
-                        android:background="@drawable/subscribe_edit_text_style"
-                        android:hint="Address"
-                        android:inputType="text"
-                        android:paddingLeft="10dp"
-                        android:textColor="#2B2B2C"/>
-
-                    <EditText
-                        android:id="@+id/apartment"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="7dp"
-                        android:background="@drawable/subscribe_edit_text_style"
-                        android:hint="Apartment,suite,etc(optional)"
+                        android:hint="First name"
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textColor="#2B2B2C" />
 
                     <EditText
-                        android:id="@+id/city"
-                        android:layout_width="match_parent"
+                        android:id="@+id/last_name"
+                        android:layout_width="0dp"
                         android:layout_height="43dp"
-                        android:layout_marginTop="7dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight=".4"
                         android:background="@drawable/subscribe_edit_text_style"
-                        android:hint="City"
+                        android:hint="Last name"
                         android:inputType="text"
                         android:paddingLeft="10dp"
-                        android:textColor="#2B2B2C"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:baselineAligned="true"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:padding="1dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Country/Region"
-                                android:textSize="14dp" />
-                            <Spinner
-                                android:id="@+id/country_name_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-                        <LinearLayout
-
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5">
-
-                            <EditText
-                                android:id="@+id/postal_code"
-                                android:layout_width="match_parent"
-                                android:layout_height="43dp"
-                                android:layout_marginStart="2dp"
-                                android:background="@drawable/subscribe_edit_text_style"
-                                android:hint="Postal code"
-                                android:inputType="text"
-                                android:paddingLeft="10dp"
-                                android:textColor="#2B2B2C"/>
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:textColor="#4E4C4C"
-                        android:layout_marginTop="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="
-Save this information for next time
-" />
-
-                    <Button
-                        android:id="@+id/byeItNowButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/subscribe_button_style"
-                        android:focusable="true"
-                        android:padding="5dp"
-                        android:text="Continue Payment"
-                        android:textColor="#fff"
-                        android:textSize="20dp" />
-
+                        android:textColor="#2B2B2C" />
                 </LinearLayout>
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/subscribe_edit_text_style"
+                    android:hint="Address"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="4"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="#2B2B2C" />
+
+                <EditText
+                    android:id="@+id/postal_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/subscribe_edit_text_style"
+                    android:hint="Postal code"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:textColor="#2B2B2C" />
+
+                <Button
+                    android:id="@+id/byeItNowButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/subscribe_button_style"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="Continue Payment"
+                    android:textColor="#fff"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
