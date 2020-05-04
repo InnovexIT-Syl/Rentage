@@ -97,7 +97,6 @@ public class FeaturedFragment extends Fragment {
             public boolean onQueryTextChange(String s) {
                 if (!TextUtils.isEmpty(s)){
                     searchFeatured(s);
-
                 }else {
                  featuredDeals();
                 }

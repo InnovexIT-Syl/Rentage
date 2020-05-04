@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -38,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -144,21 +146,15 @@ public class ProfileActivity extends AppCompatActivity {
                     // checks until required data got
                     for (DataSnapshot data_snapshot : dataSnapshot.getChildren()) {
 
-                        // get data
                         String name = data_snapshot.child("name").getValue().toString();
-                        String email = data_snapshot.child("email").getValue().toString();
                         String profileImage = data_snapshot.child("profile_image").getValue().toString();
 
-                        // set data
                         update_name.setText(name);
 
-                        // for profile photo
                         try {
-                            // if image is received then set
                             Picasso.get().load(profileImage).into(previousProfileImage);
                         } catch (Exception e) {
-                            // if there is any exception while setting image then set default
-//                            Picasso.get().load(R.drawable.index).into(previousProfileImage);
+
                             haveProfileImage.setVisibility(View.VISIBLE);
                         }
                     }
@@ -261,46 +257,42 @@ public class ProfileActivity extends AppCompatActivity {
                             while (!uriTask.isSuccessful()) ;
                             Uri downloadUri = uriTask.getResult();
 
-                            //getting image url
-                            progressDialog.dismiss();
+                            if (uriTask.isSuccessful()) {
 
+                                HashMap<String, Object> results = new HashMap<>();
 
-                            HashMap<String, Object> results = new HashMap<>();
+                                assert downloadUri != null;
+                                results.put("name", update_name.getText().toString());
+                                results.put("profile_image", downloadUri.toString());
 
-
-                            assert downloadUri != null;
-                            results.put("name", update_name.getText().toString());
-                            results.put("profile_image", downloadUri.toString());
-
-                            databaseReference.child(firebaseUser.getUid()).updateChildren(results)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-
-                                            // url in database of user is added successfully
-                                            // dismiss progress bar
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getApplicationContext(), "Image Updated Successfully...", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                    // error adding url in database of user
-                                    // dismiss progress bar
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
+                                databaseReference.child(firebaseUser.getUid()).updateChildren(results)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "Image Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                             Toast.makeText(ProfileActivity.this, "Profile updated successfully..", Toast.LENGTH_SHORT).show();
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             // Handle unsuccessful uploads
                             Toast.makeText(ProfileActivity.this, "" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         }
