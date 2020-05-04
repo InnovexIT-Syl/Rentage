@@ -1,6 +1,7 @@
 package com.example.rentage.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,12 +66,20 @@ public class FeaturedFragment extends Fragment {
         featuredDealsRecyclerview.setAdapter(adapter);
     }
 
+    private void searchFeatured(String searchQuery){
 
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
-        menu.findItem(R.id.shopping).setVisible(false);
         SearchView searchView = (SearchView) menuItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,7 +89,13 @@ public class FeaturedFragment extends Fragment {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String s) {
+                if (!TextUtils.isEmpty(s)){
+                    searchFeatured(s);
+
+                }else {
+                 featuredDeals();
+                }
                 return false;
             }
         });

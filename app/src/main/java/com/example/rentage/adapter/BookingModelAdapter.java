@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentage.R;
 import com.example.rentage.RentSpecificActivity;
 import com.example.rentage.model.BookingModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -37,9 +38,15 @@ public class BookingModelAdapter extends RecyclerView.Adapter<BookingModelAdapte
 
     @Override
     public void onBindViewHolder(@NonNull BookingModelHolder holder, int position) {
-        holder.bookingImage.setImageResource(bookingModelList.get(position).getBookingImage());
-        holder.bookingTitle.setText(bookingModelList.get(position).getBookingTitle());
-        holder.bookingDescription.setText(bookingModelList.get(position).getBookingDetails());
+        // set user image
+        try {
+            Picasso.get().load(bookingModelList.get(position).getImageUrl()).placeholder(R.drawable.helicopter).into(holder.bookingImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        holder.bookingTitle.setText(bookingModelList.get(position).getTitle());
+        holder.bookingDescription.setText(bookingModelList.get(position).getDescription());
 
         holder.bookingButton.setOnClickListener(new View.OnClickListener() {
             @Override

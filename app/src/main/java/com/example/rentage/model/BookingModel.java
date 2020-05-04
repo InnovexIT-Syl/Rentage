@@ -2,15 +2,19 @@ package com.example.rentage.model;
 
 public class BookingModel {
     private String id;
-    private int bookingImage ;
-    private int bookingTitle;
-    private int bookingDetails;
+    private String imageUrl ;
+    private String title;
+    private String description;
 
-    public BookingModel(String id, int bookingImage, int bookingTitle, int bookingDetails) {
+    public BookingModel(){
+
+    }
+
+    public BookingModel(String id, String imageUrl, String title, String description) {
         this.id = id;
-        this.bookingImage = bookingImage;
-        this.bookingTitle = bookingTitle;
-        this.bookingDetails = bookingDetails;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.description = description;
     }
 
     public String getId() {
@@ -21,27 +25,27 @@ public class BookingModel {
         this.id = id;
     }
 
-    public int getBookingImage() {
-        return bookingImage;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setBookingImage(int bookingImage) {
-        this.bookingImage = bookingImage;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public int getBookingTitle() {
-        return bookingTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBookingTitle(int bookingTitle) {
-        this.bookingTitle = bookingTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getBookingDetails() {
-        return bookingDetails;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBookingDetails(int bookingDetails) {
-        this.bookingDetails = bookingDetails;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

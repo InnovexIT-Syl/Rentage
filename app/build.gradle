@@ -47,15 +47,18 @@ dependencies {
     // slider library
     implementation "com.github.firdausmaulan:GlideSlider:1.5.1"
 
-    // floating navigation library
-    implementation 'com.github.andremion:floatingnavigationview:1.2.0'
-
-    // shape of view
-    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
-
-    // Image crop Library
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+//    // floating navigation library
+//    implementation 'com.github.andremion:floatingnavigationview:1.2.0'
+//
+//    // shape of view
+//    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
+//
+//    // Image crop Library
+//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     // circular image library
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+//    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+
 }

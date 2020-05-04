@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Add in Application Tag -->
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+<!--        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />-->
     </application>
 
 </manifest>

@@ -289,20 +289,6 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 //        menu.findItem(R.id.search).setVisible(true);
 //        menu.findItem(R.id.shopping).setVisible(true);
 
-        MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
         return super.onCreateOptionsMenu(menu);
     }
 
