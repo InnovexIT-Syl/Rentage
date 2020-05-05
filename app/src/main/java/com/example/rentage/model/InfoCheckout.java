@@ -8,8 +8,13 @@ public class InfoCheckout {
     String orderByID;
     String postal_code;
     String email_or_mobile;
+    String date;
 
-    public InfoCheckout(String id, String name, String address, String orderByEmail, String orderByID, String postal_code, String email_or_mobile) {
+    public InfoCheckout(){
+
+    }
+
+    public InfoCheckout(String id, String name, String address, String orderByEmail, String orderByID, String postal_code, String email_or_mobile, String date) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -17,6 +22,7 @@ public class InfoCheckout {
         this.orderByID = orderByID;
         this.postal_code = postal_code;
         this.email_or_mobile = email_or_mobile;
+        this.date = date;
     }
 
     public String getId() {
@@ -73,5 +79,13 @@ public class InfoCheckout {
 
     public void setEmail_or_mobile(String email_or_mobile) {
         this.email_or_mobile = email_or_mobile;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

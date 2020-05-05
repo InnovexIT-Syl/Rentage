@@ -1,8 +1,7 @@
 package com.example.rentage.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentage.R;
 import com.example.rentage.model.CartModel;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
@@ -38,9 +38,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CartHolder holder, int position) {
-//        holder.cartImage.setImageResource(cartModelList.get(position).getCartImage());
-//        holder.cartName.setText(cartModelList.get(position).getCartName());
-//        holder.cartQuantity.setText(cartModelList.get(position).getCartQuantity());
+        try {
+            Picasso.get().load(cartModelList.get(position).getCartImage()).placeholder(R.drawable.helicopter).into(holder.cartImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        holder.cartName.setText(cartModelList.get(position).getCartTitle());
+        holder.cartQuantity.setText("Qty : " + cartModelList.get(position).getCartQuantity());
     }
 
     @Override

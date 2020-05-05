@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -32,6 +33,11 @@ import com.example.rentage.adapter.CartAdapter;
 import com.example.rentage.adapter.FeaturedDealsAdapter;
 import com.example.rentage.model.CartModel;
 import com.example.rentage.model.FeaturedDealsModel;
+import com.example.rentage.model.InfoCheckout;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,9 +52,8 @@ import java.util.List;
 public class AddToCartActivity extends AppCompatActivity {
 
     private Toolbar toolbarCart;
-    private List<FeaturedDealsModel> featuredDealsModelList = new ArrayList<>();
     private List<CartModel> cartModelList = new ArrayList<>();
-    private RecyclerView cart_recycler_view;
+    private RecyclerView pop;
     Button addToCartButton, byeItNow;
     private PopupWindow popupWindow;
     private LinearLayout linearLayout;
@@ -57,8 +62,15 @@ public class AddToCartActivity extends AppCompatActivity {
     EditText quantity;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
     ImageView add_to_cart_image;
     TextView title, price, featured_description;
+    String uid;
+    String add_cart_image_url;
+    Integer thePrice;
+    ProgressDialog progressDialog;
+    Button continueShopping, viewYourCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +93,12 @@ public class AddToCartActivity extends AppCompatActivity {
         featured_description = findViewById(R.id.featured_description);
 
         add_to_cart_image = findViewById(R.id.add_cart_image);
+        add_to_cart_image = findViewById(R.id.add_cart_image);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
+        progressDialog = new ProgressDialog(this);
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarCart.setNavigationOnClickListener(new View.OnClickListener() {
@@ -94,14 +111,14 @@ public class AddToCartActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Add on your cart");
 
-        showSelectedFeatured();
         initCustomView();
+        checkUserStatus();
+        showSelectedFeatured();
 
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //addCart();
-                showCartWindow();
+                addSelectedFeatured();
             }
         });
         byeItNow.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +127,6 @@ public class AddToCartActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), InfoCheckoutActivity.class));
             }
         });
-
-        // cart_recycler_view = findViewById(R.id.cart_recycler_view);
     }
 
     private void showSelectedFeatured() {
@@ -119,7 +134,6 @@ public class AddToCartActivity extends AppCompatActivity {
         String id = intent.getStringExtra("ID");
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Services");
-
         Query query = databaseReference.orderByChild("id").equalTo(id);
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,6 +144,8 @@ public class AddToCartActivity extends AppCompatActivity {
                     String d = ds.child("description").getValue().toString();
                     String t = ds.child("title").getValue().toString();
                     String imageUrl = ds.child("imageUrl").getValue().toString();
+                    add_cart_image_url = imageUrl;
+                    thePrice = Integer.parseInt(p);
 
                     title.setText(t);
                     featured_description.setText(d);
@@ -149,79 +165,151 @@ public class AddToCartActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
+    private void addSelectedFeatured() {
+        if (quantity.getText().toString().equals("")){
+            quantity.setError("Give your quantity value");
+            return;
+        }
+        progressDialog.setMessage("Added card..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        if (uid != null) {
+            databaseReference = firebaseDatabase.getReference("Users");
+            Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // checks until required data got
+                    for (DataSnapshot data_snapshot : dataSnapshot.getChildren()) {
+
+                        String email = data_snapshot.child("email").getValue().toString();
+                        String carAddedById = uid;
+
+                        databaseReference = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference dbRef = databaseReference.child("added_cart").push();
+                        final String key = dbRef.getKey();
+                        Integer totalPrice = thePrice * Integer.parseInt(quantity.getText().toString());
+                        CartModel cartModel = new CartModel(key, title.getText().toString(), add_cart_image_url, quantity.getText().toString(), email, carAddedById, String.valueOf(thePrice), String.valueOf(totalPrice));
+
+                        dbRef.setValue(cartModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddToCartActivity.this, "Add to cart successfully uploaded",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(AddToCartActivity.this, "Add to cart upload failed!" + e.toString(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
+            startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
+        }
+    }
+
 
     private void initCustomView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
         haveCart = customView.findViewById(R.id.haveCart);
-        cart_recycler_view = customView.findViewById(R.id.cart_recycler_view);
+        pop = customView.findViewById(R.id.pop_recyclerView);
+        continueShopping = customView.findViewById(R.id.continue_shopping);
+        viewYourCart = customView.findViewById(R.id.view_cart);
     }
 
-    private void addCart() {
+
+    private void showCartRecyclerView() {
+        pop.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        cart_recycler_view.setLayoutManager(layoutManager);
+        pop.setLayoutManager(layoutManager);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("added_cart");
+        Query query = databaseReference.orderByChild("cartOrderById").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    CartModel cartModel = ds.getValue(CartModel.class);
+                    cartModelList.add(cartModel);
+                }
+                viewYourCart.setText("VIEW CART (" + cartModelList.size() + ")");
+                if (cartModelList.isEmpty()) {
+                    haveCart.setVisibility(View.VISIBLE);
+                    pop.setVisibility(View.GONE);
+                }
+                CartAdapter adapter = new CartAdapter(getApplicationContext(),
+                        cartModelList);
 
 
-        cartModelList.add(new CartModel("Mercedes G Class", "image", "Qty : 1", "", "", ""));
+                pop.setAdapter(adapter);
+                pop.setHasFixedSize(true);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        CartAdapter adapter = new CartAdapter(getApplicationContext(),
-                cartModelList);
-        cart_recycler_view.setAdapter(adapter);
-        cart_recycler_view.setHasFixedSize(true);
     }
 
     private void showCartWindow() {
+        if (!cartModelList.isEmpty()) {
+            haveCart.setVisibility(View.GONE);
+        }
+        continueShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        viewYourCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddToCartActivity.this, AddedCartActivity.class));
+                finish();
+            }
+        });
 
-//        if (cartModelList.isEmpty()) {
-//            haveCart.setVisibility(View.VISIBLE);
-//        } else {
-//            haveCart.setVisibility(View.GONE);
-//            cart_recycler_view.setVisibility(View.VISIBLE);
-//        }
-//        Button continueShopping = customView.findViewById(R.id.continue_shopping);
-//        Button viewYourCart = customView.findViewById(R.id.view_cart);
-//
-//        continueShopping.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), AddToCartActivity.class));
-//            }
-//        });
-//        viewYourCart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), AddedCartActivity.class));
-//                finish();
-//            }
-//        });
-//
-//        popupWindow = new PopupWindow(
-//                customView,
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//        );
-//
-//        popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
-//
-//        popupWindow.setFocusable(true);
-//        popupWindow.setOutsideTouchable(true);
-//        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        popupWindow.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            popupWindow.setElevation(5.0f);
-//        }
-//
-//        ImageButton closeButton = customView.findViewById(R.id.button_close);
-//        closeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                popupWindow.dismiss();
-//            }
-//        });
-//        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 130);
+        popupWindow = new PopupWindow(
+                customView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (Build.VERSION.SDK_INT >= 21) {
+            popupWindow.setElevation(5.0f);
+        }
+
+        ImageButton closeButton = customView.findViewById(R.id.button_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.showAtLocation(linearLayout, Gravity.TOP, 0, 130);
+        cartModelList.clear();
     }
 
     @Override
@@ -245,7 +333,7 @@ public class AddToCartActivity extends AppCompatActivity {
             case R.id.search:
                 return true;
             case R.id.shopping:
-                //addCart();
+                showCartRecyclerView();
                 showCartWindow();
                 return true;
             default:
@@ -253,4 +341,9 @@ public class AddToCartActivity extends AppCompatActivity {
         }
     }
 
+    private void checkUserStatus() {
+        if (firebaseUser != null) {
+            uid = firebaseUser.getUid();
+        }
+    }
 }

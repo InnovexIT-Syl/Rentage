@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,14 +36,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.request.RequestOptions;
 
 import com.example.rentage.adapter.BookingAndFeaturedViewPagerAdapter;
+import com.example.rentage.adapter.CartAdapter;
 import com.example.rentage.fragments.FeaturedFragment;
 import com.example.rentage.fragments.HomeFragment;
 
+import com.example.rentage.model.CartModel;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.BaseSliderView;
@@ -62,6 +68,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -89,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     // storage
     private StorageReference storageReference;
 
+    private List<CartModel> cartModelList = new ArrayList<>();
+    private RecyclerView pop;
+    private View customView;
+    private TextView haveCart;
+    Button continueShopping, viewYourCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
         slider();
         checkUserStatus();
-
+        initCustomView();
         if (uid != null) {
 
             final TextView userName = navigationView.getHeaderView(0).findViewById(R.id.username);
@@ -163,19 +175,14 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                     // checks until required data got
                     for (DataSnapshot data_snapshot : dataSnapshot.getChildren()) {
 
-                        // get data
                         String name = data_snapshot.child("name").getValue().toString();
                         String email = data_snapshot.child("email").getValue().toString();
                         String profileImage = data_snapshot.child("profile_image").getValue().toString();
 
-                        // set data
                         userName.setText(name);
                         userEmail.setText(email);
 
-
-                        // for profile photo
                         try {
-                            // if image is received then set
                             Picasso.get().load(profileImage).into(userProfileImage);
                         } catch (Exception e) {
                             // if there is any exception while setting image then set default
@@ -191,11 +198,19 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 }
             });
 
-
         }
 
     }
 
+    private void initCustomView() {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
+        haveCart = customView.findViewById(R.id.haveCart);
+        pop = customView.findViewById(R.id.pop_recyclerView);
+        continueShopping = customView.findViewById(R.id.continue_shopping);
+        viewYourCart = customView.findViewById(R.id.view_cart);
+        continueShopping.setVisibility(View.GONE);
+    }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, drawerLayout, toolbarHome, R.string.drawer_open, R.string.drawer_close);
@@ -291,57 +306,81 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void showCartRecyclerView() {
+        pop.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        pop.setLayoutManager(layoutManager);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("added_cart");
+        Query query = databaseReference.orderByChild("cartOrderById").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    CartModel cartModel = ds.getValue(CartModel.class);
+                    cartModelList.add(cartModel);
+                }
+                viewYourCart.setText("VIEW CART (" + cartModelList.size() + ")");
+                if (cartModelList.isEmpty()) {
+                    haveCart.setVisibility(View.VISIBLE);
+                    pop.setVisibility(View.GONE);
+                }
+                CartAdapter adapter = new CartAdapter(getApplicationContext(),
+                        cartModelList);
+                pop.setAdapter(adapter);
+                pop.setHasFixedSize(true);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showCartWindow() {
+        if (!cartModelList.isEmpty()) {
+            haveCart.setVisibility(View.GONE);
+        }
+        viewYourCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddedCartActivity.class));
+                finish();
+            }
+        });
+
+        popupWindow = new PopupWindow(
+                customView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (Build.VERSION.SDK_INT >= 21) {
+            popupWindow.setElevation(5.0f);
+        }
+
+        ImageButton closeButton = customView.findViewById(R.id.button_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.showAtLocation(relativeLayout, Gravity.TOP, 0, 130);
+        cartModelList.clear();
+    }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.shopping:
-                // Initialize a new instance of LayoutInflater service
-                LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-                // Inflate the custom layout/view
-                View customView = inflater.inflate(R.layout.custom_cart_pop_up, null);
-                Button continueShopping = customView.findViewById(R.id.continue_shopping);
-                Button viewYourCart = customView.findViewById(R.id.view_cart);
-
-                continueShopping.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), AddToCartActivity.class));
-                        finish();
-                    }
-                });
-                viewYourCart.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), AddedCartActivity.class));
-                        finish();
-                    }
-                });
-//                customView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in));
-                popupWindow = new PopupWindow(
-                        customView,
-                        LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT
-                );
-                popupWindow.setAnimationStyle(R.style.pop_up_window_animation);
-
-                popupWindow.setFocusable(true);
-                popupWindow.setOutsideTouchable(true);
-                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                popupWindow.update(0, 0, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                if (Build.VERSION.SDK_INT >= 21) {
-                    popupWindow.setElevation(5.0f);
-                }
-
-                ImageButton closeButton = customView.findViewById(R.id.button_close);
-                closeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Dismiss the popup window
-                        popupWindow.dismiss();
-                    }
-                });
-
-                popupWindow.showAtLocation(relativeLayout, Gravity.CENTER_VERTICAL, 0, 0);
+                showCartRecyclerView();
+                showCartWindow();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

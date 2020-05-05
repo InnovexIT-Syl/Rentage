@@ -2,16 +2,16 @@ package com.example.rentage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
+
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,22 +31,24 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 
 public class InfoCheckoutActivity extends AppCompatActivity {
 
     private Toolbar toolbarCart;
-    String[] countryArray;
-    private Spinner spinnerCountry;
     ArrayAdapter<String> adapter;
     FirebaseAuth firebaseAuth;
     EditText email_or_mobile, first_name, last_name, address, postal_code;
     Button byeItNowButton;
-    String country;
     String uid;
     DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
-    private FirebaseUser firebaseUser;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseUser firebaseUser;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,6 @@ public class InfoCheckoutActivity extends AppCompatActivity {
     private void initialize() {
 
         toolbarCart = findViewById(R.id.toolbar_info_checkout);
-        // spinnerCountry = findViewById(R.id.country_name_spinner);
 
         setSupportActionBar(toolbarCart);
         toolbarCart.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -70,16 +71,20 @@ public class InfoCheckoutActivity extends AppCompatActivity {
             }
         });
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         email_or_mobile = findViewById(R.id.email_or_mobile);
         first_name = findViewById(R.id.first_name);
         last_name = findViewById(R.id.last_name);
         address = findViewById(R.id.address);
-        // city = findViewById(R.id.city);
         postal_code = findViewById(R.id.postal_code);
         byeItNowButton = findViewById(R.id.byeItNowButton);
         getSupportActionBar().setTitle("Information checkout");
-        databaseReference = firebaseDatabase.getReference("Users");
-        // implementSpinnerCountry();
+
+        progressDialog = new ProgressDialog(this);
+
         checkUserStatus();
         byeItNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +95,11 @@ public class InfoCheckoutActivity extends AppCompatActivity {
     }
 
     private void uploadInfo() {
-        // firebase database instance
+        progressDialog.setMessage("Added info..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         if (uid != null) {
+            databaseReference = firebaseDatabase.getReference("Users");
             Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -106,13 +114,18 @@ public class InfoCheckoutActivity extends AppCompatActivity {
                         databaseReference = FirebaseDatabase.getInstance().getReference();
                         final DatabaseReference dbRef = databaseReference.child("Info_checkout").push();
                         final String key = dbRef.getKey();
-                        InfoCheckout infoCheckout = new InfoCheckout(key, name, address.getText().toString(), orderById, email,
-                                postal_code.getText().toString(), email_or_mobile.getText().toString());
+
+                        Date date = new Date();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh.mm aa zzzz ");
+                        String originalDate = dateFormat.format(date);
+
+                        InfoCheckout infoCheckout = new InfoCheckout(key, name, address.getText().toString(), email, orderById,
+                                postal_code.getText().toString(), email_or_mobile.getText().toString(),originalDate);
 
                         dbRef.setValue(infoCheckout).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-
+                                progressDialog.dismiss();
                                 Toast.makeText(InfoCheckoutActivity.this, "Info checkout successfully uploaded",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -128,9 +141,11 @@ public class InfoCheckoutActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    progressDialog.dismiss();
                 }
             });
+        } else {
+            startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
         }
     }
 

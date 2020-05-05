@@ -61,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Give your quantity"
-                    android:textColor="#181819"
-                    android:textSize="19dp" />
+                    android:textColor="#2D2D2E"
+                    android:textSize="16dp" />
 
                 <EditText
                     android:id="@+id/quantity"
@@ -71,7 +71,7 @@
                     android:layout_marginTop="2dp"
                     android:background="@drawable/subscribe_edit_text_style"
                     android:hint="Quantity"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:paddingLeft="10dp"
                     android:textColor="#2B2B2C" />
 
@@ -115,7 +115,6 @@
                     android:text="AED 1,000 per Day (VAT inclusive)"
                     android:textColor="#181819"
                     android:textSize="19dp" />
-
 
             </LinearLayout>
         </LinearLayout>

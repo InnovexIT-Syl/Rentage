@@ -45,7 +45,6 @@
             android:orientation="vertical"
             android:padding="3dp">
 
-
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profileImage"
                 android:layout_width="120dp"
@@ -55,15 +54,16 @@
                 app:civ_border_color="#504E4E"
                 app:civ_border_width="2dp" />
 
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -76,7 +76,6 @@
                         android:textColor="#252424"
                         android:textSize="20dp" />
 
-
                     <TextView
                         android:id="@+id/userEmail"
                         android:layout_width="wrap_content"
@@ -87,20 +86,16 @@
                         android:textSize="17dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
 
-                    <ImageButton
-                        android:id="@+id/edit_Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_weight=".1"
-                        android:background="#FBFAFA"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/ic_edit_black_24dp" />
-                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/edit_Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="#FBFAFA"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/ic_edit_black_24dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

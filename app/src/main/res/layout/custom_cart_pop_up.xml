@@ -51,10 +51,10 @@
                 android:textSize="20dp"
                 android:gravity="center"
                 android:textStyle="normal"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cart_recycler_view"
+                android:id="@+id/pop_recyclerView"
                 android:layout_width="match_parent"
                 android:visibility="gone"
                 android:layout_height="160dp" />
@@ -84,7 +84,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/subscribe_button_style"
                 android:padding="4dp"
-                android:text="VIEW CART (2)"
+                android:text="VIEW CART"
                 android:textAllCaps="true"
                 android:textColor="#FFFF" />
 

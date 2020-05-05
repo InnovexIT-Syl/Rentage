@@ -1,20 +1,36 @@
 package com.example.rentage.model;
 
 public class CartModel {
+    String id;
     String cartTitle;
     String cartImage;
     String cartQuantity;
-    String id;
     String cartOrderByEmail;
     String cartOrderById;
+    String singleCost;
+    String totalCost;
 
-    public CartModel(String cartTitle, String cartImage, String cartQuantity, String id, String cartOrderByEmail, String cartOrderById) {
+    public CartModel(){
+
+    }
+
+    public CartModel(String id, String cartTitle, String cartImage, String cartQuantity, String cartOrderByEmail, String cartOrderById, String singleCost, String totalCost) {
+        this.id = id;
         this.cartTitle = cartTitle;
         this.cartImage = cartImage;
         this.cartQuantity = cartQuantity;
-        this.id = id;
         this.cartOrderByEmail = cartOrderByEmail;
         this.cartOrderById = cartOrderById;
+        this.singleCost = singleCost;
+        this.totalCost = totalCost;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCartTitle() {
@@ -41,14 +57,6 @@ public class CartModel {
         this.cartQuantity = cartQuantity;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getCartOrderByEmail() {
         return cartOrderByEmail;
     }
@@ -63,5 +71,21 @@ public class CartModel {
 
     public void setCartOrderById(String cartOrderById) {
         this.cartOrderById = cartOrderById;
+    }
+
+    public String getSingleCost() {
+        return singleCost;
+    }
+
+    public void setSingleCost(String singleCost) {
+        this.singleCost = singleCost;
+    }
+
+    public String getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(String totalCost) {
+        this.totalCost = totalCost;
     }
 }

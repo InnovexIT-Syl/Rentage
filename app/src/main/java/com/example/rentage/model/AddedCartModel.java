@@ -8,6 +8,9 @@ public class AddedCartModel {
     private String quantity;
     private String totalCost;
 
+    public AddedCartModel(){
+
+    }
     public AddedCartModel(String id, int cartImage, String cartModelName, String cost, String quantity, String totalCost) {
         this.id = id;
         this.cartImage = cartImage;
